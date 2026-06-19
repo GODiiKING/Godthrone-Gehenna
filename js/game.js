@@ -50,6 +50,12 @@ let GameManager = {
         let playerMagicPct = Math.max(0, (player.magic / player.maxMagic) * 100);
         
         document.querySelector(".healthplayer").innerHTML = `Health: ${player.health} / ${player.maxHealth}`;
+        
+        // --- NEW: This line actually updates the player's text sync! ---
+        if (document.querySelector(".magicplayer")) {
+            document.querySelector(".magicplayer").innerHTML = `Magic: ${player.magic} / ${player.maxMagic}`;
+        }
+        
         document.getElementById("p-health-bar").style.width = `${playerHealthPct}%`;
         document.getElementById("p-mana-bar").style.width = `${playerMagicPct}%`;
 
@@ -95,7 +101,9 @@ let GameManager = {
                     <h3>${player.classType}</h3>
                     <p class="line-1 healthplayer" style="margin-bottom:2px;">Health: ${player.health} / ${player.maxHealth}</p>
                     <div class="stat-bar-container"><div id="p-health-bar" class="stat-bar-fill bg-player-health"></div></div>
-                    <p class="line-3" style="margin-bottom:2px;">Magic: ${player.magic} / ${player.maxMagic}</p>
+                    
+                    <p class="line-3 magicplayer" style="color: #ffffff; margin-bottom:2px;">Magic: ${player.magic} / ${player.maxMagic}</p>
+                    
                     <div class="stat-bar-container" style="margin-bottom: 8px;"><div id="p-mana-bar" class="stat-bar-fill bg-mana"></div></div>
                     <p class="line-3">Strength: ${player.strength} | Stamina: ${player.stamina} | Speed: ${player.speed}</p>
                 </div>
