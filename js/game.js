@@ -55,8 +55,12 @@ let GameManager = {
 
         if (typeof enemy !== "undefined" && enemy !== null) {
             let enemyHealthPct = Math.max(0, (enemy.health / enemy.maxHealth) * 100);
+            let enemyMagicPct = Math.max(0, (enemy.magic / enemy.maxMagic) * 100);
+            
             document.querySelector(".healthenemy").innerHTML = `Health: ${enemy.health} / ${enemy.maxHealth}`;
+            document.querySelector(".magicenemy").innerHTML = `Magic: ${enemy.magic} / ${enemy.maxMagic}`;
             document.getElementById("e-health-bar").style.width = `${enemyHealthPct}%`;
+            document.getElementById("e-mana-bar").style.width = `${enemyMagicPct}%`;
         }
     },
 
@@ -127,6 +131,7 @@ let GameManager = {
 
         enemy = new Enemy(adjustedName, scaledHP, scaledMagic, scaledSTR, scaledStamina, scaledSPD);
         enemy.maxHealth = scaledHP;
+        enemy.maxMagic = scaledMagic; 
 
         if (this.currentRealm.type === "umbra") {
             player.speed = Math.floor(player.speed * 0.5);
@@ -154,7 +159,9 @@ let GameManager = {
                     <h3 style="color: ${isBossRound ? '#ffc048' : '#ff4757'};">${enemy.enemyType}</h3>
                     <p class="line-1 healthenemy" style="margin-bottom:2px;">Health: ${enemy.health} / ${enemy.maxHealth}</p>
                     <div class="stat-bar-container"><div id="e-health-bar" class="stat-bar-fill bg-enemy-health"></div></div>
-                    <p class="line-3">Magic: ${enemy.magic} | Strength: ${enemy.strength} | Stamina: ${enemy.stamina} | Speed: ${enemy.speed}</p>
+                    <p class="line-3 magicenemy" style="margin-bottom:2px;">Magic: ${enemy.magic} / ${enemy.maxMagic}</p>
+                    <div class="stat-bar-container" style="margin-bottom: 8px;"><div id="e-mana-bar" class="stat-bar-fill bg-mana"></div></div>
+                    <p class="line-3">Strength: ${enemy.strength} | Stamina: ${enemy.stamina} | Speed: ${enemy.speed}</p>
                 </div>
             </div>`;
 
@@ -163,5 +170,5 @@ let GameManager = {
         } else {
             printLog(`⚠️ ${enemy.enemyType} approaches from the shadow realms. (Scaling Level: +${currentStreak})`, "#ff6b9d");
         }
-    }
-};
+    } // setFight closed safely here!
+}; // GameManager object closed safely here!
