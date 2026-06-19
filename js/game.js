@@ -7,10 +7,10 @@ let GameManager = {
     setGameStart: function(classType) {
         this.isGameOver = false;
         this.selectedClass = classType;
-        this.currentStreak = parseInt(localStorage.getItem("godthrone_streak")) || 0;
         
-        if (!localStorage.getItem("gt_inv_potion")) localStorage.setItem("gt_inv_potion", "0");
-        if (!localStorage.getItem("gt_inv_ward")) localStorage.setItem("gt_inv_ward", "0");
+        // MOVED TO STORAGE: Clean abstractions
+        this.currentStreak = GameStorage.getStreak();
+        GameStorage.initializeInventory();
 
         const consoleEl = document.getElementById("combatConsole");
         if (consoleEl) {
@@ -27,7 +27,6 @@ let GameManager = {
             startupMsg += ` (Current Win Streak: ${this.currentStreak} 🔥)`;
         }
         
-        // Clean global helper calls!
         printLog(startupMsg, "#ffc048");
         printRealmLog(this.currentRealm);
     },
@@ -67,25 +66,21 @@ let GameManager = {
         let key = classType.toLowerCase();
         let template = CharacterDatabase[key] || { name: classType, health: 150, magic: 50, strength: 100, stamina: 100, speed: 100 };
         
-        let relicHP = parseInt(localStorage.getItem("gt_relic_hp")) || 0;
-        let relicMagic = parseInt(localStorage.getItem("gt_relic_magic")) || 0;
-        let relicSTR = parseInt(localStorage.getItem("gt_relic_str")) || 0;
-        let relicStamina = parseInt(localStorage.getItem("gt_relic_stamina")) || 0;
-        let relicSPD = parseInt(localStorage.getItem("gt_relic_spd")) || 0;
-
+        // MOVED TO STORAGE: One clean config call
+        let relics = GameStorage.getRelicModifiers();
         let mundusBonusHP = (this.currentRealm && this.currentRealm.type === "mundus") ? 50 : 0;
 
         player = new Player(
             template.name, 
-            template.health + relicHP + mundusBonusHP, 
-            template.magic + relicMagic, 
-            template.strength + relicSTR, 
-            template.stamina + relicStamina, 
-            template.speed + relicSPD
+            template.health + relics.hp + mundusBonusHP, 
+            template.magic + relics.magic, 
+            template.strength + relics.str, 
+            template.stamina + relics.stamina, 
+            template.speed + relics.spd
         );
         
-        player.maxHealth = template.health + relicHP + mundusBonusHP;
-        player.maxMagic = template.magic + relicMagic;
+        player.maxHealth = template.health + relics.hp + mundusBonusHP;
+        player.maxMagic = template.magic + relics.magic;
         player.isDefending = false; 
         player.hasAegisWard = false; 
         
@@ -98,7 +93,7 @@ let GameManager = {
             <div class="card" style="display: flex !important; opacity: 1; transform: none; width: 100% !important; max-width: 100% !important; min-height: 140px !important; box-sizing: border-box !important; margin: 0 auto; flex-direction: row; align-items: center; gap: 40px; text-align: left; padding: 20px 40px;">
                 <img src="./images/exiliumarch/${imgName}.png" class="img-avatar" style="width: 70px; height: 70px; margin-bottom: 0; flex-shrink: 0;">
                 <div style="flex-grow: 1;">
-                    <h3>${player.classType} ${relicHP + relicMagic + relicSTR > 0 ? "✨" : ""}</h3>
+                    <h3>${player.classType} ${relics.hp + relics.magic + relics.str > 0 ? "✨" : ""}</h3>
                     <p class="line-1 healthplayer" style="margin-bottom:2px;">Health: ${player.health} / ${player.maxHealth}</p>
                     <div class="stat-bar-container"><div id="p-health-bar" class="stat-bar-fill bg-player-health"></div></div>
                     <p class="line-3" style="margin-bottom:2px;">Magic: ${player.magic} / ${player.maxMagic}</p>
@@ -143,8 +138,8 @@ let GameManager = {
             enemy.speed = Math.floor(enemy.speed * 0.5);
         }
 
-        let potions = parseInt(localStorage.getItem("gt_inv_potion")) || 0;
-        let wards = parseInt(localStorage.getItem("gt_inv_ward")) || 0;
+        // MOVED TO STORAGE: Destructuring items cleanly
+        let { potions, wards } = GameStorage.getInventory();
         let burstCost = (this.currentRealm.type === "umbra") ? 10 : 20;
 
         document.querySelector(".actions").innerHTML = `
