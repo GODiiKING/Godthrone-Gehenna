@@ -1,3 +1,4 @@
+// js/game.js
 let GameManager = {
     isGameOver: false,
     currentStreak: 0,
@@ -7,10 +8,7 @@ let GameManager = {
     setGameStart: function(classType) {
         this.isGameOver = false;
         this.selectedClass = classType;
-        
-        // MOVED TO STORAGE: Clean abstractions
         this.currentStreak = GameStorage.getStreak();
-        GameStorage.initializeInventory();
 
         const consoleEl = document.getElementById("combatConsole");
         if (consoleEl) {
@@ -66,23 +64,20 @@ let GameManager = {
         let key = classType.toLowerCase();
         let template = CharacterDatabase[key] || { name: classType, health: 150, magic: 50, strength: 100, stamina: 100, speed: 100 };
         
-        // MOVED TO STORAGE: One clean config call
-        let relics = GameStorage.getRelicModifiers();
         let mundusBonusHP = (this.currentRealm && this.currentRealm.type === "mundus") ? 50 : 0;
 
         player = new Player(
             template.name, 
-            template.health + relics.hp + mundusBonusHP, 
-            template.magic + relics.magic, 
-            template.strength + relics.str, 
-            template.stamina + relics.stamina, 
-            template.speed + relics.spd
+            template.health + mundusBonusHP, 
+            template.magic, 
+            template.strength, 
+            template.stamina, 
+            template.speed
         );
         
-        player.maxHealth = template.health + relics.hp + mundusBonusHP;
-        player.maxMagic = template.magic + relics.magic;
+        player.maxHealth = template.health + mundusBonusHP;
+        player.maxMagic = template.magic;
         player.isDefending = false; 
-        player.hasAegisWard = false; 
         
         let container = document.getElementById("character-grid");
         container.style.display = "block"; 
@@ -93,7 +88,7 @@ let GameManager = {
             <div class="card" style="display: flex !important; opacity: 1; transform: none; width: 100% !important; max-width: 100% !important; min-height: 140px !important; box-sizing: border-box !important; margin: 0 auto; flex-direction: row; align-items: center; gap: 40px; text-align: left; padding: 20px 40px;">
                 <img src="./images/exiliumarch/${imgName}.png" class="img-avatar" style="width: 70px; height: 70px; margin-bottom: 0; flex-shrink: 0;">
                 <div style="flex-grow: 1;">
-                    <h3>${player.classType} ${relics.hp + relics.magic + relics.str > 0 ? "✨" : ""}</h3>
+                    <h3>${player.classType}</h3>
                     <p class="line-1 healthplayer" style="margin-bottom:2px;">Health: ${player.health} / ${player.maxHealth}</p>
                     <div class="stat-bar-container"><div id="p-health-bar" class="stat-bar-fill bg-player-health"></div></div>
                     <p class="line-3" style="margin-bottom:2px;">Magic: ${player.magic} / ${player.maxMagic}</p>
@@ -138,19 +133,13 @@ let GameManager = {
             enemy.speed = Math.floor(enemy.speed * 0.5);
         }
 
-        // MOVED TO STORAGE: Destructuring items cleanly
-        let { potions, wards } = GameStorage.getInventory();
         let burstCost = (this.currentRealm.type === "umbra") ? 10 : 20;
 
         document.querySelector(".actions").innerHTML = `
-            <div class="actions-row" style="width: 100%; display: flex; gap: 10px; justify-content: center; margin-bottom: 10px;">
+            <div class="actions-row" style="width: 100%; display: flex; gap: 10px; justify-content: center;">
                 <button class="menu-toggle border-pink" onclick="PlayerMoves.calcAttack()">Attack!</button>
                 <button class="menu-toggle border-gold" onclick="PlayerMoves.calcSpell()">Soul Burst (${burstCost} MP)</button>
                 <button class="menu-toggle border-green" onclick="PlayerMoves.calcDefend()">Defend</button>
-            </div>
-            <div class="actions-row" style="width: 100%; display: flex; gap: 10px; justify-content: center;">
-                <button class="menu-toggle border-red" onclick="PlayerMoves.usePotion()">Use Essence Vial (${potions} left)</button>
-                <button class="menu-toggle border-teal" onclick="PlayerMoves.useWard()">Activate Aegis Ward (${wards} left)</button>
             </div>
         `;
         
@@ -174,21 +163,5 @@ let GameManager = {
         } else {
             printLog(`⚠️ ${enemy.enemyType} approaches from the shadow realms. (Scaling Level: +${currentStreak})`, "#ff6b9d");
         }
-    },
-
-    advanceNextRound: function() {
-        this.isGameOver = false;
-        
-        player.health = player.maxHealth;
-        player.magic = player.maxMagic;
-        
-        this.rollRealmShift();
-        this.resetPlayer(this.selectedClass);
-        this.setPreFight();
-        
-        document.querySelector(".enemy").innerHTML = "";
-        
-        printLog(`🔥 Reality matrix mutated. Entered new Trial Arena layout.`, "#ffc048");
-        printRealmLog(this.currentRealm);
     }
 };
