@@ -133,17 +133,27 @@ let GameManager = {
         enemy.maxHealth = scaledHP;
         enemy.maxMagic = scaledMagic; 
 
-        if (this.currentRealm.type === "umbra") {
+        if (this.currentRealm && this.currentRealm.type === "umbra") {
             player.speed = Math.floor(player.speed * 0.5);
             enemy.speed = Math.floor(enemy.speed * 0.5);
         }
 
-        let burstCost = (this.currentRealm.type === "umbra") ? 10 : 20;
+        // --- NEW: DYNAMIC WEAPON NAMES & COSTS ---
+        let weaponName = CharacterDatabase[playerKey] ? CharacterDatabase[playerKey].weapon : "Soul Burst";
+        
+        let specialCosts = {
+            "joker": "15 MP", "sangunuus": "15 MP", "voracium": "ALL MP", 
+            "khaos": "20 MP", "kosmos": "15 MP", "malignis": "10 MP", 
+            "excidi": "20 MP", "dominor": "ALL MP", "arma": "15 MP", 
+            "illusor": "10 MP", "amanuen": "15 MP", "deus": "15 MP"
+        };
+        let displayCost = specialCosts[playerKey] || "20 MP";
+        // -----------------------------------------
 
         document.querySelector(".actions").innerHTML = `
             <div class="actions-row" style="width: 100%; display: flex; gap: 10px; justify-content: center;">
                 <button class="menu-toggle border-pink" onclick="PlayerMoves.calcAttack()">Attack!</button>
-                <button class="menu-toggle border-gold" onclick="PlayerMoves.calcSpell()">Soul Burst (${burstCost} MP)</button>
+                <button class="menu-toggle border-gold" onclick="PlayerMoves.calcSpell()">${weaponName} (${displayCost})</button>
                 <button class="menu-toggle border-green" onclick="PlayerMoves.calcDefend()">Defend</button>
             </div>
         `;
@@ -170,5 +180,5 @@ let GameManager = {
         } else {
             printLog(`⚠️ ${enemy.enemyType} approaches from the shadow realms. (Scaling Level: +${currentStreak})`, "#ff6b9d");
         }
-    } // setFight closed safely here!
+    }
 }; // GameManager object closed safely here!
