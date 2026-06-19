@@ -17,9 +17,9 @@ let PlayerMoves = {
             spawnDamageText("-" + playerAttackValues.totalDamage, document.querySelector(".enemy .card"));
             
             if (playerAttackValues.isCrit) {
-                GameManager.printLog(`🔥 CRITICAL STRIKE! You break their guard for ${playerAttackValues.totalDamage} damage!`, "#ffc048");
+                printLog(`🔥 CRITICAL STRIKE! You break their guard for ${playerAttackValues.totalDamage} damage!`, "#ffc048");
             } else {
-                GameManager.printLog(`💥 You hit ${playerAttackValues.damage} damage ${playerAttackValues.hits} times! (Total: ${playerAttackValues.totalDamage})`, "#ffc048");
+                printLog(`💥 You hit ${playerAttackValues.damage} damage ${playerAttackValues.hits} times! (Total: ${playerAttackValues.totalDamage})`, "#ffc048");
             }
             
             GameManager.triggerDamageEffects("player");
@@ -34,9 +34,9 @@ let PlayerMoves = {
                 enemy.health = Math.max(0, enemy.health - playerAttackValues.totalDamage);
                 
                 if (playerAttackValues.isCrit) {
-                    GameManager.printLog(`⚡ COUNTER CRITICAL! You smash them back for ${playerAttackValues.totalDamage} damage!`, "#ffc048");
+                    printLog(`⚡ COUNTER CRITICAL! You smash them back for ${playerAttackValues.totalDamage} damage!`, "#ffc048");
                 } else {
-                    GameManager.printLog(`⚡ You counter-attacked and hit ${playerAttackValues.damage} damage ${playerAttackValues.hits} times! (Total: ${playerAttackValues.totalDamage})`, "#ffc048");
+                    printLog(`⚡ You counter-attacked and hit ${playerAttackValues.damage} damage ${playerAttackValues.hits} times! (Total: ${playerAttackValues.totalDamage})`, "#ffc048");
                 }
                 
                 GameManager.triggerDamageEffects("player");
@@ -53,7 +53,7 @@ let PlayerMoves = {
         let cost = (GameManager.currentRealm.type === "umbra") ? 10 : 20;
 
         if (player.magic < cost) {
-            GameManager.printLog("❌ Your essence is drained! Not enough Magic to channel cosmic energy.", "#ff4757");
+            printLog("❌ Your essence is drained! Not enough Magic to channel cosmic energy.", "#ff4757");
             return;
         }
 
@@ -63,7 +63,7 @@ let PlayerMoves = {
 
         spawnDamageText("-" + spellDamage, document.querySelector(".enemy .card"));
 
-        GameManager.printLog(`✨ You channel your ancestral lineage! Soul Burst detonates for ${spellDamage} magic damage!`, "#ffc048");
+        printLog(`✨ You channel your ancestral lineage! Soul Burst detonates for ${spellDamage} magic damage!`, "#ffc048");
 
         GameManager.triggerDamageEffects("player");
         GameManager.updateVisualBars();
@@ -82,9 +82,9 @@ let PlayerMoves = {
         player.magic = Math.min(player.maxMagic, player.magic + magicGain);
         
         if (magicGain > 0) {
-            GameManager.printLog("🛡️ You enter a defensive stance, funneling ambient layout pressure into Magic! (+15 MP)", "#4cd137");
+            printLog("🛡️ You enter a defensive stance, funneling ambient layout pressure into Magic! (+15 MP)", "#4cd137");
         } else {
-            GameManager.printLog("🛡️ You brace for impact! (Magic generation disabled by Elementa Flare!)", "#ff6b9d");
+            printLog("🛡️ You brace for impact! (Magic generation disabled by Elementa Flare!)", "#ff6b9d");
         }
         
         GameManager.updateVisualBars();
@@ -94,13 +94,13 @@ let PlayerMoves = {
     usePotion: function() {
         if (GameManager.isGameOver) return;
         let p = parseInt(localStorage.getItem("gt_inv_potion")) || 0;
-        if (p <= 0) { GameManager.printLog("❌ Your utility slots contain no Essence Vials!", "#ff4757"); return; }
+        if (p <= 0) { printLog("❌ Your utility slots contain no Essence Vials!", "#ff4757"); return; }
         
         localStorage.setItem("gt_inv_potion", p - 1);
         let heal = Math.floor(player.maxHealth * 0.4); // Restores 40% of max health matrix
         player.health = Math.min(player.maxHealth, player.health + heal);
         
-        GameManager.printLog(`🧪 You crush an Essence Vial mid-fight! Recovered ${heal} Vitality points.`, "#4cd137");
+        printLog(`🧪 You crush an Essence Vial mid-fight! Recovered ${heal} Vitality points.`, "#4cd137");
         GameManager.updateVisualBars();
         GameManager.setFight(); // Instantly update item quantities rendered on buttons
     },
@@ -108,12 +108,12 @@ let PlayerMoves = {
     useWard: function() {
         if (GameManager.isGameOver) return;
         let w = parseInt(localStorage.getItem("gt_inv_ward")) || 0;
-        if (w <= 0) { GameManager.printLog("❌ Your utility slots contain no Aegis Shields!", "#ff4757"); return; }
+        if (w <= 0) { printLog("❌ Your utility slots contain no Aegis Shields!", "#ff4757"); return; }
         
         localStorage.setItem("gt_inv_ward", w - 1);
         player.hasAegisWard = true;
         
-        GameManager.printLog("🛡️ Reality warps! An emergency barrier wraps around your card array.", "#00d2d3");
+        printLog("🛡️ Reality warps! An emergency barrier wraps around your card array.", "#00d2d3");
         GameManager.setFight();
     },
 
@@ -146,7 +146,7 @@ let PlayerMoves = {
 
         // Verify if active emergency shielding is running
         if (player.hasAegisWard) {
-            GameManager.printLog("✨ ABSORB! Your emergency Aegis Barrier shattered but completely blocked the impact matrix!", "#00d2d3");
+            printLog("✨ ABSORB! Your emergency Aegis Barrier shattered but completely blocked the impact matrix!", "#00d2d3");
             player.hasAegisWard = false; // Destroy barrier shield reference
             return;
         }
@@ -158,19 +158,19 @@ let PlayerMoves = {
         if (!player.isDefending && GameManager.currentRealm.type !== "mundus") {
             let dodgeChance = Math.min(35, (player.speed / (player.speed + enemy.speed)) * 100);
             if ((Math.random() * 100) < dodgeChance) {
-                GameManager.printLog(`💨 Whiff! You swiftly dodged ${enemy.enemyType}'s oncoming swipe!`, "#ffc048");
+                printLog(`💨 Whiff! You swiftly dodged ${enemy.enemyType}'s oncoming swipe!`, "#ffc048");
                 return;
             }
         }
 
         if (player.isDefending) {
             incomingDamage = Math.floor(incomingDamage * 0.3);
-            GameManager.printLog("🛡️ Hardened Defenses! You absorbed the bulk of the attack matrix.", "#4cd137");
+            printLog("🛡️ Hardened Defenses! You absorbed the bulk of the attack matrix.", "#4cd137");
             player.isDefending = false; 
         }
 
         player.health = Math.max(0, player.health - incomingDamage);
-        GameManager.printLog(`🩸 Enemy hit ${incomingDamage} damage ${enemyAttackValues.hits} times! (Total: ${incomingDamage})`, "#ff6b9d");
+        printLog(`🩸 Enemy hit ${incomingDamage} damage ${enemyAttackValues.hits} times! (Total: ${incomingDamage})`, "#ff6b9d");
         
         GameManager.triggerDamageEffects("enemy");
         GameManager.updateVisualBars();
@@ -186,13 +186,13 @@ let PlayerMoves = {
             localStorage.setItem("godthrone_streak", GameManager.currentStreak);
             
             if (GameManager.currentStreak % 2 === 0) {
-                GameManager.printLog("🛒 A Shadow Merchant materializes from the spatial folds! Buy an asset:", "#00d2d3");
+                printLog("🛒 A Shadow Merchant materializes from the spatial folds! Buy an asset:", "#00d2d3");
                 document.querySelector(".actions").innerHTML = `
                     <button class="menu-toggle border-red" onclick="PlayerMoves.buyItem('potion')">Buy Essence Vial (+1 Item)</button>
                     <button class="menu-toggle border-teal" onclick="PlayerMoves.buyItem('ward')">Buy Aegis Shield Shard (+1 Item)</button>
                 `;
             } else {
-                GameManager.printLog(`🏆 VICTORY! Shards collapse. Choose a Cosmic Relic drop:`, "#4cd137");
+                printLog(`🏆 VICTORY! Shards collapse. Choose a Cosmic Relic drop:`, "#4cd137");
                 let rand1 = Math.floor(Math.random() * this.relicPool.length);
                 let rand2 = Math.floor(Math.random() * this.relicPool.length);
                 while (rand1 === rand2) { rand2 = Math.floor(Math.random() * this.relicPool.length); }
@@ -210,7 +210,7 @@ let PlayerMoves = {
             localStorage.setItem("gt_relic_str", 0); localStorage.setItem("gt_relic_stamina", 0); localStorage.setItem("gt_relic_spd", 0);
             localStorage.setItem("gt_inv_potion", "0"); localStorage.setItem("gt_inv_ward", "0");
             
-            GameManager.printLog("💀 DEFEATED! Your cosmic run ended and items disintegrated.", "#ff4757");
+            printLog("💀 DEFEATED! Your cosmic run ended and items disintegrated.", "#ff4757");
             document.querySelector(".actions").innerHTML = `
                 <button class="menu-toggle border-pink" onclick="window.location.reload()">Return to Character Select</button>
             `;
@@ -222,7 +222,7 @@ let PlayerMoves = {
         let currentCount = parseInt(localStorage.getItem(storageKey)) || 0;
         localStorage.setItem(storageKey, currentCount + 1);
         
-        GameManager.printLog(`📦 Transaction sealed! Asset packed into temporary item inventory bags.`, "#4cd137");
+        printLog(`📦 Transaction sealed! Asset packed into temporary item inventory bags.`, "#4cd137");
         document.querySelector(".actions").innerHTML = `
             <button class="menu-toggle" style="animation: RadialGlow 2s infinite;" onclick="GameManager.advanceNextRound()">Advance to Next Trial ⚔️</button>
         `;
@@ -233,7 +233,7 @@ let PlayerMoves = {
         let currentBonus = parseInt(localStorage.getItem(storageKey)) || 0;
         localStorage.setItem(storageKey, currentBonus + value);
         
-        GameManager.printLog(`✨ Relic integrated successfully! Your ${stat} has been augmented.`, "#4cd137");
+        printLog(`✨ Relic integrated successfully! Your ${stat} has been augmented.`, "#4cd137");
         document.querySelector(".actions").innerHTML = `
             <button class="menu-toggle" style="animation: RadialGlow 2s infinite;" onclick="GameManager.advanceNextRound()">Advance to Next Trial ⚔️</button>
         `;

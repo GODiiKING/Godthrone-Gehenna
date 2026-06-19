@@ -2,14 +2,13 @@ let GameManager = {
     isGameOver: false,
     currentStreak: 0,
     selectedClass: "",
-    currentRealm: null, // Tracks active environmental conditions
+    currentRealm: null, 
 
     setGameStart: function(classType) {
         this.isGameOver = false;
         this.selectedClass = classType;
         this.currentStreak = parseInt(localStorage.getItem("godthrone_streak")) || 0;
         
-        // Initialize inventory space if empty
         if (!localStorage.getItem("gt_inv_potion")) localStorage.setItem("gt_inv_potion", "0");
         if (!localStorage.getItem("gt_inv_ward")) localStorage.setItem("gt_inv_ward", "0");
 
@@ -19,7 +18,6 @@ let GameManager = {
             consoleEl.innerHTML = ""; 
         }
 
-        // Generate the first realm shift condition right at startup
         this.rollRealmShift();
         this.resetPlayer(classType);
         this.setPreFight();
@@ -28,47 +26,14 @@ let GameManager = {
         if (this.currentStreak > 0) {
             startupMsg += ` (Current Win Streak: ${this.currentStreak} 🔥)`;
         }
-        this.printLog(startupMsg, "#ffc048");
-        this.printRealmLog();
+        
+        // Clean global helper calls!
+        printLog(startupMsg, "#ffc048");
+        printRealmLog(this.currentRealm);
     },
 
-    // Pulled out into realms.js! We just call the global generator function here.
     rollRealmShift: function() {
         this.currentRealm = getRandomRealm();
-    },
-
-    printRealmLog: function() {
-        this.printLog(`🌌 CURRENT REALM: ${this.currentRealm.name} - ${this.currentRealm.desc}`, "#ffc048");
-    },
-
-    printLog: function(message, color = "#ffffff") {
-        const consoleEl = document.getElementById("combatConsole");
-        if (!consoleEl) return;
-
-        const line = document.createElement("div");
-        line.style.color = color;
-        line.style.marginTop = "5px";
-        line.style.lineHeight = "1.6";
-        
-        if (color === "#ffc048" || color === "#4cd137" || color === "#ff4757" || color === "#ff6b9d") {
-            line.style.textShadow = "0 0 8px rgba(255, 255, 255, 0.2)";
-            line.style.fontWeight = "700";
-        }
-
-        consoleEl.appendChild(line);
-
-        const chars = Array.from(message);
-        let i = 0;
-        
-        function type() {
-            if (i < chars.length) {
-                line.innerHTML += chars[i];
-                i++;
-                consoleEl.scrollTop = consoleEl.scrollHeight;
-                setTimeout(type, 12);
-            }
-        }
-        type();
     },
 
     triggerDamageEffects: function(attackerType) {
@@ -108,7 +73,6 @@ let GameManager = {
         let relicStamina = parseInt(localStorage.getItem("gt_relic_stamina")) || 0;
         let relicSPD = parseInt(localStorage.getItem("gt_relic_spd")) || 0;
 
-        // Apply Mundus temporary realm health modifications if active
         let mundusBonusHP = (this.currentRealm && this.currentRealm.type === "mundus") ? 50 : 0;
 
         player = new Player(
@@ -123,7 +87,7 @@ let GameManager = {
         player.maxHealth = template.health + relicHP + mundusBonusHP;
         player.maxMagic = template.magic + relicMagic;
         player.isDefending = false; 
-        player.hasAegisWard = false; // Fresh defensive barrier flag
+        player.hasAegisWard = false; 
         
         let container = document.getElementById("character-grid");
         container.style.display = "block"; 
@@ -135,13 +99,10 @@ let GameManager = {
                 <img src="./images/exiliumarch/${imgName}.png" class="img-avatar" style="width: 70px; height: 70px; margin-bottom: 0; flex-shrink: 0;">
                 <div style="flex-grow: 1;">
                     <h3>${player.classType} ${relicHP + relicMagic + relicSTR > 0 ? "✨" : ""}</h3>
-                    
                     <p class="line-1 healthplayer" style="margin-bottom:2px;">Health: ${player.health} / ${player.maxHealth}</p>
                     <div class="stat-bar-container"><div id="p-health-bar" class="stat-bar-fill bg-player-health"></div></div>
-                    
                     <p class="line-3" style="margin-bottom:2px;">Magic: ${player.magic} / ${player.maxMagic}</p>
                     <div class="stat-bar-container" style="margin-bottom: 8px;"><div id="p-mana-bar" class="stat-bar-fill bg-mana"></div></div>
-                    
                     <p class="line-3">Strength: ${player.strength} | Stamina: ${player.stamina} | Speed: ${player.speed}</p>
                 </div>
             </div>`;
@@ -214,9 +175,9 @@ let GameManager = {
             </div>`;
 
         if (isBossRound) {
-            GameManager.printLog(`🚨 CRITICAL WARNING: ${enemy.enemyType} has reality-warped into the arena!`, "#ff4757");
+            printLog(`🚨 CRITICAL WARNING: ${enemy.enemyType} has reality-warped into the arena!`, "#ff4757");
         } else {
-            GameManager.printLog(`⚠️ ${enemy.enemyType} approaches from the shadow realms. (Scaling Level: +${currentStreak})`, "#ff6b9d");
+            printLog(`⚠️ ${enemy.enemyType} approaches from the shadow realms. (Scaling Level: +${currentStreak})`, "#ff6b9d");
         }
     },
 
@@ -232,7 +193,7 @@ let GameManager = {
         
         document.querySelector(".enemy").innerHTML = "";
         
-        GameManager.printLog(`🔥 Reality matrix mutated. Entered new Trial Arena layout.`, "#ffc048");
-        this.printRealmLog();
+        printLog(`🔥 Reality matrix mutated. Entered new Trial Arena layout.`, "#ffc048");
+        printRealmLog(this.currentRealm);
     }
 };
