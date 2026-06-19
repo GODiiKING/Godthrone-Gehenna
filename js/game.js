@@ -32,15 +32,9 @@ let GameManager = {
         this.printRealmLog();
     },
 
-    // Realm Modifier Database Engine Matrix
-    realms: [
-        { name: "Umbra Alignment", desc: "🌌 Shadow forces condense. Speed metrics are halved, but Soul Bursts cost 10 less Magic!", type: "umbra" },
-        { name: "Elementa Flare", desc: "🔥 Primal energies erupt. Physical attacks deal 35% more damage, but active Defense yields 0 Magic.", type: "elementa" },
-        { name: "Mundus Gravity", desc: "🌍 Structural density peaks. Maximum HP is boosted by 50 points, but evasion calculations are disabled.", type: "mundus" }
-    ],
-
+    // Pulled out into realms.js! We just call the global generator function here.
     rollRealmShift: function() {
-        this.currentRealm = this.realms[Math.floor(Math.random() * this.realms.length)];
+        this.currentRealm = getRandomRealm();
     },
 
     printRealmLog: function() {
