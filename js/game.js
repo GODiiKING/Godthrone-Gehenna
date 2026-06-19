@@ -34,8 +34,8 @@ let GameManager = {
 
     // Realm Modifier Database Engine Matrix
     realms: [
-        { name: "Umbra Alignment", desc: "🌌 Shadow forces condense. Speed metrics are halved, but Soul Bursts cost 10 less MP!", type: "umbra" },
-        { name: "Elementa Flare", desc: "🔥 Primal energies erupt. Physical attacks deal 35% more damage, but active Defense yields 0 MP.", type: "elementa" },
+        { name: "Umbra Alignment", desc: "🌌 Shadow forces condense. Speed metrics are halved, but Soul Bursts cost 10 less Magic!", type: "umbra" },
+        { name: "Elementa Flare", desc: "🔥 Primal energies erupt. Physical attacks deal 35% more damage, but active Defense yields 0 Magic.", type: "elementa" },
         { name: "Mundus Gravity", desc: "🌍 Structural density peaks. Maximum HP is boosted by 50 points, but evasion calculations are disabled.", type: "mundus" }
     ],
 
@@ -91,11 +91,11 @@ let GameManager = {
 
     updateVisualBars: function() {
         let playerHealthPct = Math.max(0, (player.health / player.maxHealth) * 100);
-        let playerManaPct = Math.max(0, (player.mana / player.maxMana) * 100);
+        let playerMagicPct = Math.max(0, (player.magic / player.maxMagic) * 100);
         
         document.querySelector(".healthplayer").innerHTML = `Health: ${player.health} / ${player.maxHealth}`;
         document.getElementById("p-health-bar").style.width = `${playerHealthPct}%`;
-        document.getElementById("p-mana-bar").style.width = `${playerManaPct}%`;
+        document.getElementById("p-mana-bar").style.width = `${playerMagicPct}%`;
 
         if (typeof enemy !== "undefined" && enemy !== null) {
             let enemyHealthPct = Math.max(0, (enemy.health / enemy.maxHealth) * 100);
@@ -106,12 +106,12 @@ let GameManager = {
 
     resetPlayer: function(classType) {
         let key = classType.toLowerCase();
-        let template = CharacterDatabase[key] || { name: classType, health: 150, mana: 50, strength: 100, agility: 100, speed: 100 };
+        let template = CharacterDatabase[key] || { name: classType, health: 150, magic: 50, strength: 100, stamina: 100, speed: 100 };
         
         let relicHP = parseInt(localStorage.getItem("gt_relic_hp")) || 0;
-        let relicMP = parseInt(localStorage.getItem("gt_relic_mp")) || 0;
+        let relicMagic = parseInt(localStorage.getItem("gt_relic_magic")) || 0;
         let relicSTR = parseInt(localStorage.getItem("gt_relic_str")) || 0;
-        let relicAGI = parseInt(localStorage.getItem("gt_relic_agi")) || 0;
+        let relicStamina = parseInt(localStorage.getItem("gt_relic_stamina")) || 0;
         let relicSPD = parseInt(localStorage.getItem("gt_relic_spd")) || 0;
 
         // Apply Mundus temporary realm health modifications if active
@@ -120,14 +120,14 @@ let GameManager = {
         player = new Player(
             template.name, 
             template.health + relicHP + mundusBonusHP, 
-            template.mana + relicMP, 
+            template.magic + relicMagic, 
             template.strength + relicSTR, 
-            template.agility + relicAGI, 
+            template.stamina + relicStamina, 
             template.speed + relicSPD
         );
         
         player.maxHealth = template.health + relicHP + mundusBonusHP;
-        player.maxMana = template.mana + relicMP;
+        player.maxMagic = template.magic + relicMagic;
         player.isDefending = false; 
         player.hasAegisWard = false; // Fresh defensive barrier flag
         
@@ -140,15 +140,15 @@ let GameManager = {
             <div class="card" style="display: flex !important; opacity: 1; transform: none; width: 100% !important; max-width: 100% !important; min-height: 140px !important; box-sizing: border-box !important; margin: 0 auto; flex-direction: row; align-items: center; gap: 40px; text-align: left; padding: 20px 40px;">
                 <img src="./images/exiliumarch/${imgName}.png" class="img-avatar" style="width: 70px; height: 70px; margin-bottom: 0; flex-shrink: 0;">
                 <div style="flex-grow: 1;">
-                    <h3>${player.classType} ${relicHP+relicMP+relicSTR > 0 ? "✨" : ""}</h3>
+                    <h3>${player.classType} ${relicHP + relicMagic + relicSTR > 0 ? "✨" : ""}</h3>
                     
                     <p class="line-1 healthplayer" style="margin-bottom:2px;">Health: ${player.health} / ${player.maxHealth}</p>
                     <div class="stat-bar-container"><div id="p-health-bar" class="stat-bar-fill bg-player-health"></div></div>
                     
-                    <p class="line-3" style="margin-bottom:2px;">Mana: ${player.mana} / ${player.maxMana}</p>
+                    <p class="line-3" style="margin-bottom:2px;">Magic: ${player.magic} / ${player.maxMagic}</p>
                     <div class="stat-bar-container" style="margin-bottom: 8px;"><div id="p-mana-bar" class="stat-bar-fill bg-mana"></div></div>
                     
-                    <p class="line-3">Strength: ${player.strength} | Agility: ${player.agility} | Speed: ${player.speed}</p>
+                    <p class="line-3">Strength: ${player.strength} | Stamina: ${player.stamina} | Speed: ${player.speed}</p>
                 </div>
             </div>`;
     },
@@ -173,14 +173,14 @@ let GameManager = {
         let scaleMultiplier = isBossRound ? currentStreak * 2.5 : currentStreak * 1.2;
 
         let scaledHP = Math.floor(template.health + (scaleMultiplier * 20));
-        let scaledMP = Math.floor(template.mana + (scaleMultiplier * 5));
+        let scaledMagic = Math.floor(template.magic + (scaleMultiplier * 5));
         let scaledSTR = Math.floor(template.strength + (scaleMultiplier * 4));
-        let scaledAGI = Math.floor(template.agility + (scaleMultiplier * 3));
+        let scaledStamina = Math.floor(template.stamina + (scaleMultiplier * 3));
         let scaledSPD = Math.floor(template.speed + (scaleMultiplier * 3));
 
         let adjustedName = isBossRound ? `👑 OVERLORD ${template.name.toUpperCase()}` : template.name;
 
-        enemy = new Enemy(adjustedName, scaledHP, scaledMP, scaledSTR, scaledAGI, scaledSPD);
+        enemy = new Enemy(adjustedName, scaledHP, scaledMagic, scaledSTR, scaledStamina, scaledSPD);
         enemy.maxHealth = scaledHP;
 
         if (this.currentRealm.type === "umbra") {
@@ -215,7 +215,7 @@ let GameManager = {
                     <h3 style="color: ${isBossRound ? '#ffc048' : '#ff4757'};">${enemy.enemyType}</h3>
                     <p class="line-1 healthenemy" style="margin-bottom:2px;">Health: ${enemy.health} / ${enemy.maxHealth}</p>
                     <div class="stat-bar-container"><div id="e-health-bar" class="stat-bar-fill bg-enemy-health"></div></div>
-                    <p class="line-3">Mana: ${enemy.mana} | Strength: ${enemy.strength} | Agility: ${enemy.agility} | Speed: ${enemy.speed}</p>
+                    <p class="line-3">Magic: ${enemy.magic} | Strength: ${enemy.strength} | Stamina: ${enemy.stamina} | Speed: ${enemy.speed}</p>
                 </div>
             </div>`;
 
@@ -231,7 +231,7 @@ let GameManager = {
         
         // Dynamic Recovery process configuration loop
         player.health = player.maxHealth;
-        player.mana = player.maxMana;
+        player.magic = player.maxMagic;
         
         // Roll a completely new randomized environmental factor block
         this.rollRealmShift();
@@ -250,8 +250,8 @@ let PlayerMoves = {
         { name: "Umbra Loop", stat: "speed", value: 15, msg: "+15 Speed Matrix" },
         { name: "Elementa Core", stat: "strength", value: 12, msg: "+12 Physical Might" },
         { name: "Mundus Crest", stat: "health", value: 45, msg: "+45 Vitality Capacitor" },
-        { name: "Aether Lens", stat: "mana", value: 30, msg: "+30 Ancestral Mana" },
-        { name: "Anarch Coil", stat: "agility", value: 15, msg: "+15 Evasive Agility" }
+        { name: "Aether Lens", stat: "magic", value: 30, msg: "+30 Ancestral Magic" },
+        { name: "Anarch Coil", stat: "stamina", value: 15, msg: "+15 Evasive Stamina" }
     ],
 
     calcAttack: function() {
@@ -299,13 +299,13 @@ let PlayerMoves = {
 
         let cost = (GameManager.currentRealm.type === "umbra") ? 10 : 20;
 
-        if (player.mana < cost) {
-            GameManager.printLog("❌ Your essence is drained! Not enough Mana to channel cosmic energy.", "#ff4757");
+        if (player.magic < cost) {
+            GameManager.printLog("❌ Your essence is drained! Not enough Magic to channel cosmic energy.", "#ff4757");
             return;
         }
 
-        player.mana -= cost;
-        let spellDamage = Math.floor((player.strength * 1.5) + (player.maxMana * 0.8));
+        player.magic -= cost;
+        let spellDamage = Math.floor((player.strength * 1.5) + (player.maxMagic * 0.8));
         enemy.health = Math.max(0, enemy.health - spellDamage);
 
         spawnDamageText("-" + spellDamage, document.querySelector(".enemy .card"));
@@ -324,21 +324,21 @@ let PlayerMoves = {
 
         player.isDefending = true;
         
-        // Elementa Flare environment cancels out all natural mana regeneration matrices
-        let manaGain = (GameManager.currentRealm.type === "elementa") ? 0 : 15;
-        player.mana = Math.min(player.maxMana, player.mana + manaGain);
+        // Elementa Flare environment cancels out all natural resource recovery
+        let magicGain = (GameManager.currentRealm.type === "elementa") ? 0 : 15;
+        player.magic = Math.min(player.maxMagic, player.magic + magicGain);
         
-        if (manaGain > 0) {
-            GameManager.printLog("🛡️ You enter a defensive stance, funneling ambient layout pressure into Mana! (+15 MP)", "#4cd137");
+        if (magicGain > 0) {
+            GameManager.printLog("🛡️ You enter a defensive stance, funneling ambient layout pressure into Magic! (+15 MP)", "#4cd137");
         } else {
-            GameManager.printLog("🛡️ You brace for impact! (Mana generation disabled by Elementa Flare!)", "#ff6b9d");
+            GameManager.printLog("🛡️ You brace for impact! (Magic generation disabled by Elementa Flare!)", "#ff6b9d");
         }
         
         GameManager.updateVisualBars();
         this.enemyAttack();
     },
 
-    // NEW: Core Consumable Potion Usage Logic
+    // Core Consumable Potion Usage Logic
     usePotion: function() {
         if (GameManager.isGameOver) return;
         let p = parseInt(localStorage.getItem("gt_inv_potion")) || 0;
@@ -353,7 +353,7 @@ let PlayerMoves = {
         GameManager.setFight(); // Instantly update item quantities rendered on buttons
     },
 
-    // NEW: Core Consumable Barrier Shield Usage Logic
+    // Core Consumable Barrier Shield Usage Logic
     useWard: function() {
         if (GameManager.isGameOver) return;
         let w = parseInt(localStorage.getItem("gt_inv_ward")) || 0;
@@ -367,7 +367,7 @@ let PlayerMoves = {
     },
 
     attack: function(attacker) {
-        let modifier = (attacker.mana > 0) ? attacker.mana : attacker.agility;
+        let modifier = (attacker.magic > 0) ? attacker.magic : attacker.stamina;
         let baseDamage = (attacker.strength * modifier) / 750;
         
         // Apply Elementa physical scaling properties if environment allows it
@@ -378,11 +378,11 @@ let PlayerMoves = {
         let offset = Math.floor(Math.random() * 6) + 3; 
         let totalDamage = Math.floor(baseDamage + offset);
         
-        let maxHits = Math.floor(attacker.agility / 65) + 1;
+        let maxHits = Math.floor(attacker.stamina / 65) + 1;
         let hits = Math.floor(Math.random() * maxHits) + 1;
         
         let finalDamage = totalDamage * hits;
-        let critChance = Math.min(40, attacker.agility / 6); 
+        let critChance = Math.min(40, attacker.stamina / 6); 
         let isCrit = (Math.random() * 100) < critChance;
         
         if (isCrit) finalDamage = Math.floor(finalDamage * 1.75);
@@ -455,8 +455,8 @@ let PlayerMoves = {
         } else {
             GameManager.currentStreak = 0;
             localStorage.setItem("godthrone_streak", 0);
-            localStorage.setItem("gt_relic_hp", 0); localStorage.setItem("gt_relic_mp", 0);
-            localStorage.setItem("gt_relic_str", 0); localStorage.setItem("gt_relic_agi", 0); localStorage.setItem("gt_relic_spd", 0);
+            localStorage.setItem("gt_relic_hp", 0); localStorage.setItem("gt_relic_magic", 0);
+            localStorage.setItem("gt_relic_str", 0); localStorage.setItem("gt_relic_stamina", 0); localStorage.setItem("gt_relic_spd", 0);
             localStorage.setItem("gt_inv_potion", "0"); localStorage.setItem("gt_inv_ward", "0");
             
             GameManager.printLog("💀 DEFEATED! Your cosmic run ended and items disintegrated.", "#ff4757");
@@ -466,7 +466,7 @@ let PlayerMoves = {
         }
     },
 
-    // NEW: Logic script module handling active market inventory purchases
+    // Logic script module handling active market inventory purchases
     buyItem: function(type) {
         let storageKey = `gt_inv_${type}`;
         let currentCount = parseInt(localStorage.getItem(storageKey)) || 0;
@@ -490,20 +490,18 @@ let PlayerMoves = {
     }
 };
 
-// Place this at the end of your script file
+// Floating damage indicators
 function spawnDamageText(text, targetElement) {
     const popup = document.createElement("div");
     popup.classList.add("damage-popup");
     popup.innerText = text;
     
-    // Get position of the enemy card to show text there
     const rect = targetElement.getBoundingClientRect();
     popup.style.left = (rect.left + rect.width / 2) + "px";
     popup.style.top = (rect.top - 20) + "px";
     
     document.body.appendChild(popup);
     
-    // Auto-remove after animation
     setTimeout(() => {
         popup.remove();
     }, 800);
