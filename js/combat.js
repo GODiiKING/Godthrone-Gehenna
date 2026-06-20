@@ -394,6 +394,8 @@ let PlayerMoves = {
 
     endMatch: function(outcome) {
         GameManager.isGameOver = true;
+          document.querySelector(".enemy").innerHTML = "";
+          enemy = null;
         if (outcome === "win") {
             GameManager.currentStreak += 1;
             localStorage.setItem("godthrone_streak", GameManager.currentStreak);

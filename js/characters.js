@@ -42,9 +42,14 @@ function Enemy(enemyType, health, magic, strength, stamina, speed) {
     this.stamina = stamina;
     this.speed = speed;
     
-    // Tracks debuffs like Sangunuus's bleed
+    // UPDATED: Initialize all expected state properties here
     this.state = {
-        bleed: 0
+        bleed: 0,
+        stacks: 0,
+        tempBuff: 0,
+        theftCap: 0,
+        isDefending: false,
+        mpGainFromDmg: false
     };
 }
 
