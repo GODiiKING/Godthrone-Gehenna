@@ -374,54 +374,9 @@ let PlayerMoves = {
 
     enemyAttack: function() {
         if (GameManager.isGameOver) return;
-
-        let dmgObj = BaseCombat.calculateDamage(enemy);
-        let incomingDamage = dmgObj.totalDamage;
         
-        // Evasion logic
-        if (!player.state.isDefending && GameManager.currentRealm.type !== "mundus") {
-            let dodgeChance = Math.min(35, (player.speed / (player.speed + enemy.speed)) * 100);
-            if ((Math.random() * 100) < dodgeChance) {
-                printLog(`💨 Whiff! You swiftly dodged ${enemy.enemyType}'s oncoming swipe!`, "#ffc048");
-                this.processTurnEnd();
-                return;
-            }
-        }
-
-        // Defend Logic / Siphoning Logic
-        if (player.state.isDefending) {
-            if (player.classType.toLowerCase() === "deus" && player.state.mpGainFromDmg) {
-                // Deus Kinetic Siphon
-                incomingDamage = Math.floor(incomingDamage * 0.2);
-                let heal = Math.floor(incomingDamage);
-                player.health = Math.min(player.maxHealth, player.health + heal);
-                player.state.tempBuff += 25;
-                printLog(`👁️ Kinetic Siphon! Deus absorbed the blow, healed for ${heal}, and gained +25 Special Buff!`, "#4cd137");
-            } else if (player.classType.toLowerCase() === "voracium" && player.state.mpGainFromDmg) {
-                // Voracium MP absorb
-                incomingDamage = Math.floor(incomingDamage * 0.5);
-                player.magic = Math.min(player.maxMagic, player.magic + 25);
-                printLog(`👹 Blood to Magic! Voracium tanks the hit and gains +25 MP!`, "#4cd137");
-            } else {
-                // Normal defend
-                incomingDamage = Math.floor(incomingDamage * 0.3);
-                printLog("🛡️ Hardened Defenses! You absorbed the bulk of the attack.", "#4cd137");
-            }
-            player.state.isDefending = false; 
-            player.state.mpGainFromDmg = false;
-        }
-
-        player.health = Math.max(0, player.health - incomingDamage);
-        printLog(`🩸 Enemy hit ${incomingDamage} damage (${dmgObj.hits} hits)!`, "#ff6b9d");
-        
-        GameManager.triggerDamageEffects("enemy");
-        GameManager.updateVisualBars();
-        
-        if (player.health <= 0) {
-            this.endMatch("lose");
-        } else {
-            this.processTurnEnd();
-        }
+        // Hand the turn over to our new smart AI!
+        EnemyAI.executeTurn();
     },
 
     processTurnEnd: function() {
