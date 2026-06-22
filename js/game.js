@@ -111,7 +111,7 @@ let GameManager = {
                     <p class="line-3 magicplayer" style="color: #ffffff; margin-bottom:2px;">Magic: ${player.magic} / ${player.maxMagic}</p>
 
                     <div class="stat-bar-container" style="margin-bottom: 8px;"><div id="p-mana-bar" class="stat-bar-fill bg-mana"></div></div>
-                    <p class="line-3">Strength: ${player.strength} | Stamina: ${player.stamina} | Speed: ${player.speed}</p>
+                    <p class="line-3">Strength: ${player.strength} | Stamina: ${player.stamina} | Speed: ${player.speed} | Class: ${template.charClass || 'N/A'} | Type: ${template.type || 'N/A'}</p>
                 </div>
             </div>`;
     },
@@ -192,14 +192,14 @@ let GameManager = {
                     <div class="stat-bar-container"><div id="e-health-bar" class="stat-bar-fill bg-enemy-health"></div></div>
                     <p class="line-3 magicenemy" style="margin-bottom:2px;">Magic: ${enemy.magic} / ${enemy.maxMagic}</p>
                     <div class="stat-bar-container" style="margin-bottom: 8px;"><div id="e-mana-bar" class="stat-bar-fill bg-mana"></div></div>
-                    <p class="line-3">Strength: ${enemy.strength} | Stamina: ${enemy.stamina} | Speed: ${enemy.speed}</p>
+                    <p class="line-3">Strength: ${enemy.strength} | Stamina: ${enemy.stamina} | Speed: ${enemy.speed} | Class: ${template.charClass || 'N/A'} | Type: ${template.type || 'N/A'}</p>
                 </div>
             </div>`;
 
         if (isBossRound) {
             printLog(`🚨 CRITICAL WARNING: ${enemy.enemyType} has reality-warped into the arena!`, "#ff4757");
         } else {
-            printLog(`⚠️ ${enemy.enemyType} approaches from the shadow realms. (Scaling Level: +${currentStreak})`, "#ff6b9d");
+            printLog(`⚠️ ${enemy.enemyType} approaches from the shadows. (Scaling Level: +${currentStreak})`, "#ff6b9d");
         }
     }
 };
