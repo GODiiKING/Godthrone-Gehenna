@@ -1,5 +1,3 @@
-// js/combat.js
-
 const BaseCombat = {
     // Shared generic attack math so we don't repeat it 12 times
     calculateDamage: function(attacker, forcedHits = null) {
@@ -136,7 +134,7 @@ const CharacterMechanics = {
         defend: function() {
             player.state.isDefending = true;
             if (player.state.stacks < 3) player.state.stacks++;
-            printLog(`🛡️ Khaos vanishes into the void. Next Twin Obscenities will siphon stats! (Primes: ${player.state.stacks}/3)`, "#4cd137");
+            printLog(`🛡️ Khaos vanishes into the shadow. Next Twin Obscenities will siphon stats! (Primes: ${player.state.stacks}/3)`, "#4cd137");
             return true;
         }
     },
@@ -394,8 +392,7 @@ let PlayerMoves = {
 
     endMatch: function(outcome) {
         GameManager.isGameOver = true;
-          document.querySelector(".enemy").innerHTML = "";
-          enemy = null;
+        // --- FIXED: Immediate innerHTML wipe and enemy = null lines removed here ---
         if (outcome === "win") {
             GameManager.currentStreak += 1;
             localStorage.setItem("godthrone_streak", GameManager.currentStreak);

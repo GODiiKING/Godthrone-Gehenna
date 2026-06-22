@@ -1,4 +1,3 @@
-// js/game.js
 let GameManager = {
     isGameOver: false,
     currentStreak: 0,
