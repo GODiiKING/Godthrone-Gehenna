@@ -170,11 +170,14 @@ let GameManager = {
         };
         let displayCost = specialCosts[playerKey] || "20 MP";
 
+        // --- NEW: Pull tooltip strings from SkillData so they attach to the generated buttons ---
+        let skills = SkillData[playerKey] || SkillData["default"];
+
         document.querySelector(".actions").innerHTML = `
             <div class="actions-row" style="width: 100%; display: flex; gap: 10px; justify-content: center;">
-                <button class="menu-toggle border-pink" onclick="PlayerMoves.calcAttack()">Attack!</button>
-                <button class="menu-toggle border-gold" onclick="PlayerMoves.calcSpell()">${weaponName} (${displayCost})</button>
-                <button class="menu-toggle border-green" onclick="PlayerMoves.calcDefend()">Defend</button>
+                <button class="menu-toggle border-pink" data-tooltip="${skills.attackTip}" onclick="PlayerMoves.calcAttack()">ATTACK!</button>
+                <button class="menu-toggle border-gold" data-tooltip="${skills.specialTip}" onclick="PlayerMoves.calcSpell()">${weaponName.toUpperCase()} (${displayCost})</button>
+                <button class="menu-toggle border-green" data-tooltip="${skills.defendTip}" onclick="PlayerMoves.calcDefend()">${skills.defendBtn}</button>
             </div>
         `;
 

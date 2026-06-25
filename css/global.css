@@ -280,7 +280,8 @@ body {
 
 .line-1 { color: #ff6b9d; } /* Accent Pink */
 .line-2 { color: #ffc048; } /* Accent Gold */
-.line-3 { color: #ffffff; } /* Pure White */
+.line-3 { color: #f5f5f5; } /* Pure White */
+.line-4 { color: #17b1dc; } /* Pure White */
 
 /* --- BREADCRUMB COMPONENT --- */
 .breadcrumb {
@@ -467,4 +468,102 @@ body {
 @keyframes floatUp {
     0% { transform: translateY(0); opacity: 1; }
     100% { transform: translateY(-50px); opacity: 0; }
+}
+
+/* ... [Keep all of your exact existing CSS above 1-10 here] ... */
+
+/* --- 11. RPS MODAL SYSTEM --- */
+.modal-overlay {
+    display: none; /* Hidden strictly by default */
+    position: fixed;
+    inset: 0; /* Shorthand for top/left/right/bottom 0 */
+    background: rgba(0, 0, 0, 0.85);
+    z-index: 2000;
+    justify-content: center;
+    align-items: center;
+    backdrop-filter: blur(8px);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.modal-overlay.active {
+    display: flex;
+    opacity: 1;
+}
+
+.modal-content {
+    position: relative;
+    background: radial-gradient(circle at 50% 20%, #020224, #000000 80%);
+    border: 1px solid #000000;
+    border-radius: 12px;
+    padding: 40px;
+    box-shadow: 0 10px 40px rgba(36, 34, 35, 0.3);
+    max-width: 600px;
+    width: 90%;
+    text-align: center;
+    transform: scale(0.9);
+    transition: transform 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.modal-overlay.active .modal-content {
+    transform: scale(1);
+}
+
+.rps-image {
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px;
+    box-shadow: 0 0 15px rgba(255, 255, 255, 0.05);
+}
+
+.close-button {
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    background: transparent;
+    color: #ff6b9d; /* Accent Pink */
+    border: none;
+    font-size: 2rem;
+    cursor: pointer;
+    font-family: 'Acme', sans-serif;
+    transition: color 0.3s ease, transform 0.3s ease;
+}
+
+.close-button:hover {
+    color: #ffffff; /* Pure White */
+    transform: scale(1.1);
+}
+
+/* --- 12. SKILL TOOLTIP SYSTEM --- */
+.tooltip-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    background: #737373;
+    color: #000000;
+    border: 2px solid #000000;
+    padding: 10px 15px; /* Added slightly more padding */
+    border-radius: 6px;
+    font-family: 'Lexend Exa', sans-serif;
+    font-size: 0.8rem; /* Adjusted for better readability */
+    font-weight: bold;
+    pointer-events: none;
+    z-index: 1500;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.15s ease, transform 0.15s ease;
+    transform: translateY(-5px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.8);
+    
+    /* --- FIX: Allow wrapping instead of cutting off --- */
+    max-width: 280px;      /* Restrict max width so it doesn't span the whole screen */
+    white-space: normal;   /* Allows text to wrap to new lines */
+    text-align: center;    /* Keeps the look consistent */
+    line-height: 1.2;      /* Ensures lines aren't squashed */
+}
+
+.tooltip-container.active {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
 }

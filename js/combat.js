@@ -1,3 +1,128 @@
+// --- combat.js ---
+
+const SkillData = {
+    "joker": {
+        attackBtn: "ATTACK!",
+        attackTip: "Standard strike with 3 consecutive hits.",
+        specialBtn: "MATERIAL WORLD AND LIGHT",
+        specialTip: "Massive burst damage scaling with Strength.",
+        defendBtn: "DEFEND",
+        defendTip: "Converts 25% of missing HP into Magic."
+    },
+    "sangunuus": {
+        attackBtn: "ATTACK!",
+        attackTip: "Standard melee strike.",
+        specialBtn: "SHINIGAMI BLESSING",
+        specialTip: "Strikes enemy and applies Bleed stacks.",
+        defendBtn: "BLOOD GORGE",
+        defendTip: "Sacrifice 15 HP for +40 damage on next strike."
+    },
+    "voracium": {
+        attackBtn: "ATTACK!",
+        attackTip: "Standard melee strike.",
+        specialBtn: "FALSE SOVEREIGN",
+        specialTip: "Dumps ALL Magic for catastrophic burst damage.",
+        defendBtn: "DEFEND",
+        defendTip: "Converts incoming damage into Magic."
+    },
+    "dominor": {
+        attackBtn: "ATTACK!",
+        attackTip: "Standard melee strike.",
+        specialBtn: "MEMENTO MORI",
+        specialTip: "Dumps ALL Magic; damage scales with missing MP.",
+        defendBtn: "BALANCE SCALES",
+        defendTip: "Gains damage buff based on missing Magic."
+    },
+    "khaos": {
+        attackBtn: "ATTACK!",
+        attackTip: "Standard melee strike.",
+        specialBtn: "KHAOTIC RIFT",
+        specialTip: "Deals randomized damage based on speed.",
+        defendBtn: "DEFEND",
+        defendTip: "Restores 15 Magic and boosts evasion."
+    },
+    "kosmos": {
+        attackBtn: "ATTACK!",
+        attackTip: "Standard melee strike.",
+        specialBtn: "STELLAR ALIGNMENT",
+        specialTip: "Guarantees a critical hit for 2 turns.",
+        defendBtn: "DEFEND",
+        defendTip: "Restores 15 Magic."
+    },
+    "malignis": {
+        attackBtn: "ATTACK!",
+        attackTip: "Standard melee strike.",
+        specialBtn: "SOULREND DECIMATION",
+        specialTip: "Heavy damage that bypasses enemy defense.",
+        defendBtn: "DEFEND",
+        defendTip: "Restores 15 Magic."
+    },
+    "excidi": {
+        attackBtn: "ATTACK!",
+        attackTip: "Standard melee strike.",
+        specialBtn: "TOTAL ERASURE",
+        specialTip: "Deals damage and reduces enemy strength.",
+        defendBtn: "DEFEND",
+        defendTip: "Restores 15 Magic."
+    },
+    "arma": {
+        attackBtn: "ATTACK!",
+        attackTip: "Standard melee strike.",
+        specialBtn: "INFINITE INFINITUS",
+        specialTip: "Strikes twice with increased power.",
+        defendBtn: "DEFEND",
+        defendTip: "Restores 15 Magic."
+    },
+    "illusor": {
+        attackBtn: "ATTACK!",
+        attackTip: "Standard melee strike.",
+        specialBtn: "STALKER STAR",
+        specialTip: "Deals damage and lowers enemy speed.",
+        defendBtn: "DEFEND",
+        defendTip: "Restores 15 Magic."
+    },
+    "amanuen": {
+        attackBtn: "ATTACK!",
+        attackTip: "Standard melee strike.",
+        specialBtn: "SCOURGE OF CREATION",
+        specialTip: "Summons a storm for high magic damage.",
+        defendBtn: "DEFEND",
+        defendTip: "Restores 15 Magic."
+    },
+    "deus": {
+        attackBtn: "ATTACK!",
+        attackTip: "Standard melee strike.",
+        specialBtn: "AUTHORITY ENDING",
+        specialTip: "A powerful strike that heals yourself.",
+        defendBtn: "DEFEND",
+        defendTip: "Restores 15 Magic."
+    },
+    "default": {
+        attackBtn: "ATTACK!",
+        attackTip: "Standard physical strike.",
+        specialBtn: "SPECIAL ATTACK",
+        specialTip: "Consumes Magic for high damage.",
+        defendBtn: "DEFEND",
+        defendTip: "Restores 15 Magic."
+    }
+};
+
+// You need to call this function whenever the combat screen loads!
+function renderCombatButtons() {
+    // Make sure 'player' object is accessible here
+    if (!player || !player.classType) return; 
+
+    let pClass = player.classType.toLowerCase();
+    let skills = SkillData[pClass] || SkillData["default"];
+
+    // This dynamically injects the buttons with the correct names AND tooltip data
+    document.querySelector(".actions").innerHTML = `
+        <button class="menu-toggle" style="border-color: #ff6b9d;" data-tooltip="${skills.attackTip}" onclick="PlayerMoves.calcAttack()">${skills.attackBtn}</button>
+        <button class="menu-toggle" style="border-color: #ffc048;" data-tooltip="${skills.specialTip}" onclick="PlayerMoves.calcSpell()">${skills.specialBtn}</button>
+        <button class="menu-toggle" style="border-color: #4cd137;" data-tooltip="${skills.defendTip}" onclick="PlayerMoves.calcDefend()">${skills.defendBtn}</button>
+    `;
+}
+
 const BaseCombat = {
     // Universal "Bank" for all resource changes
     modifyResource: function(entity, stat, amount, isCost = false) {
@@ -66,11 +191,9 @@ const BaseCombat = {
 };
 
 const CharacterMechanics = {
+    // --- EXISTING ---
     "joker": {
-        attack: function() { 
-            BaseCombat.applyDamageToEnemy(BaseCombat.calculateDamage(player, 3)); 
-            return true; 
-        },
+        attack: function() { BaseCombat.applyDamageToEnemy(BaseCombat.calculateDamage(player, 3)); return true; },
         special: function() {
             if (!BaseCombat.modifyResource(player, "magic", 15, true)) return false;
             let spellDamage = Math.floor(player.strength * 1.8);
@@ -99,7 +222,7 @@ const CharacterMechanics = {
         },
         defend: function() {
             player.state.isDefending = true;
-            if (!BaseCombat.modifyResource(player, "health", 15, true)) return false; 
+            if (!BaseCombat.modifyResource(player, "health", 15, true)) return false;
             player.state.tempBuff = 40;
             printLog(`🛡️ Sangunuus sacrifices 15 HP to gorge on blood! Next strike +40 Damage.`, "#ff4757");
             return true;
@@ -110,11 +233,10 @@ const CharacterMechanics = {
         special: function() {
             let cost = player.magic;
             if (!BaseCombat.modifyResource(player, "magic", "ALL", true)) return false;
-            
             let spellDamage = Math.floor(cost * 3.5 + player.strength);
             BaseCombat.modifyResource(enemy, "health", spellDamage, false);
             spawnDamageText("-" + spellDamage, document.querySelector(".enemy .card"));
-            printLog(`👹 FALSE SOVEREIGN! Voracium dumps ALL magic for a catastrophic ${spellDamage} damage!`, "#ffc048");
+            printLog(`👹 FALSE SOVEREIGN! Voracium dumps ALL magic for ${spellDamage} damage!`, "#ffc048");
             GameManager.triggerDamageEffects("player");
             return true;
         },
@@ -130,8 +252,7 @@ const CharacterMechanics = {
         special: function() {
             let cost = player.magic;
             if (!BaseCombat.modifyResource(player, "magic", "ALL", true)) return false;
-            
-            let inverseScale = player.maxMagic - cost; 
+            let inverseScale = player.maxMagic - cost;
             let dmg = Math.floor(player.strength * 1.5 + inverseScale * 2);
             BaseCombat.modifyResource(enemy, "health", dmg, false);
             spawnDamageText("-" + dmg, document.querySelector(".enemy .card"));
@@ -146,8 +267,133 @@ const CharacterMechanics = {
             printLog(`🛡️ Dominor balances the scales. Next attack gains +${player.state.tempBuff} Damage!`, "#4cd137");
             return true;
         }
+    },
+    // --- NEW CHARACTERS ---
+    "khaos": {
+        attack: function() { return PlayerMoves.standardAttackHook(); },
+        special: function() {
+            if (!BaseCombat.modifyResource(player, "magic", 20, true)) return false;
+            let dmg = Math.floor(player.speed * 2.5);
+            BaseCombat.modifyResource(enemy, "health", dmg, false);
+            printLog(`🌀 KHAOTIC RIFT! Reality twists, dealing ${dmg} damage!`, "#ff6b9d");
+            return true;
+        },
+        defend: function() {
+            player.state.isDefending = true;
+            player.magic = Math.min(player.maxMagic, player.magic + 15);
+            printLog("🛡️ Khaos shifts through time. (+15 MP)", "#4cd137");
+            return true;
+        }
+    },
+    "kosmos": {
+        attack: function() { return PlayerMoves.standardAttackHook(); },
+        special: function() {
+            if (!BaseCombat.modifyResource(player, "magic", 15, true)) return false;
+            player.state.tempBuff = 100; // Guaranteed massive hit
+            printLog(`🌌 STELLAR ALIGNMENT! Your next strike is guaranteed critical!`, "#ffc048");
+            return true;
+        },
+        defend: function() {
+            player.state.isDefending = true;
+            player.magic = Math.min(player.maxMagic, player.magic + 15);
+            printLog("🛡️ You align with the cosmos. (+15 MP)", "#4cd137");
+            return true;
+        }
+    },
+    "malignis": {
+        attack: function() { return PlayerMoves.standardAttackHook(); },
+        special: function() {
+            if (!BaseCombat.modifyResource(player, "magic", 10, true)) return false;
+            let dmg = Math.floor(player.strength * 1.5);
+            BaseCombat.modifyResource(enemy, "health", dmg, false);
+            printLog(`💀 SOULREND DECIMATION! Bypassing defense for ${dmg} damage!`, "#ff4757");
+            return true;
+        },
+        defend: function() {
+            player.state.isDefending = true;
+            player.magic = Math.min(player.maxMagic, player.magic + 15);
+            printLog("🛡️ Malignis feeds on darkness. (+15 MP)", "#4cd137");
+            return true;
+        }
+    },
+    "excidi": {
+        attack: function() { return PlayerMoves.standardAttackHook(); },
+        special: function() {
+            if (!BaseCombat.modifyResource(player, "magic", 20, true)) return false;
+            enemy.strength = Math.floor(enemy.strength * 0.8);
+            printLog(`🔥 TOTAL ERASURE! Enemy Strength reduced!`, "#ff4757");
+            return true;
+        },
+        defend: function() {
+            player.state.isDefending = true;
+            player.magic = Math.min(player.maxMagic, player.magic + 15);
+            printLog("🛡️ Excidi prepares for ruin. (+15 MP)", "#4cd137");
+            return true;
+        }
+    },
+    "arma": {
+        attack: function() { return PlayerMoves.standardAttackHook(); },
+        special: function() {
+            if (!BaseCombat.modifyResource(player, "magic", 15, true)) return false;
+            BaseCombat.applyDamageToEnemy(BaseCombat.calculateDamage(player, 2));
+            printLog(`⚔️ INFINITE INFINITUS! Double strike!`, "#ffc048");
+            return true;
+        },
+        defend: function() {
+            player.state.isDefending = true;
+            player.magic = Math.min(player.maxMagic, player.magic + 15);
+            printLog("🛡️ Arma steels their blade. (+15 MP)", "#4cd137");
+            return true;
+        }
+    },
+    "illusor": {
+        attack: function() { return PlayerMoves.standardAttackHook(); },
+        special: function() {
+            if (!BaseCombat.modifyResource(player, "magic", 10, true)) return false;
+            enemy.speed = Math.floor(enemy.speed * 0.7);
+            printLog(`🔮 STALKER STAR! Enemy Speed shattered!`, "#ff6b9d");
+            return true;
+        },
+        defend: function() {
+            player.state.isDefending = true;
+            player.magic = Math.min(player.maxMagic, player.magic + 15);
+            printLog("🛡️ Illusor fades from view. (+15 MP)", "#4cd137");
+            return true;
+        }
+    },
+    "amanuen": {
+        attack: function() { return PlayerMoves.standardAttackHook(); },
+        special: function() {
+            if (!BaseCombat.modifyResource(player, "magic", 15, true)) return false;
+            let dmg = Math.floor(player.magic * 2);
+            BaseCombat.modifyResource(enemy, "health", dmg, false);
+            printLog(`📜 SCOURGE OF CREATION! Magic storm deals ${dmg} damage!`, "#ff6b9d");
+            return true;
+        },
+        defend: function() {
+            player.state.isDefending = true;
+            player.magic = Math.min(player.maxMagic, player.magic + 15);
+            printLog("🛡️ Amanuen scribes a ward. (+15 MP)", "#4cd137");
+            return true;
+        }
+    },
+    "deus": {
+        attack: function() { return PlayerMoves.standardAttackHook(); },
+        special: function() {
+            if (!BaseCombat.modifyResource(player, "magic", 15, true)) return false;
+            let dmg = Math.floor(player.strength * 1.2);
+            player.health = Math.min(player.maxHealth, player.health + dmg);
+            BaseCombat.modifyResource(enemy, "health", dmg, false);
+            printLog(`⚖️ AUTHORITY ENDING! Striking for ${dmg} and healing!`, "#ffc048");
+            return true;
+        },
+        defend: function() {
+            player.state.isDefending = true;
+            player.magic = Math.min(player.maxMagic, player.magic + 15);
+            printLog("🛡️ Deus invokes divine protection. (+15 MP)", "#4cd137");
+            return true;
+        }
     }
-    // ... Repeat this pattern for all other classes!
 };
 
 let PlayerMoves = {

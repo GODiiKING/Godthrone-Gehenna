@@ -16,12 +16,23 @@
 
     <nav class="menu-panel">
         <button class="menu-toggle" onclick="toggleMenu()">☰ Menu</button>
+        <button id="rpsButton" class="menu-toggle" style="margin-top: 10px; justify-content: center; font-family: 'Acme', sans-serif; font-size: 1.2rem;">?</button>
+        
         <div id="menuContent">
             <a href="mainmenu.html">Home</a>
             <a href="loremenu/loremenu.html">Lore</a>
             <a href="Story/world.html">Story</a>
         </div>
     </nav>
+
+    <div id="globalTooltip" class="tooltip-container"></div>
+
+    <div id="rpsModal" class="modal-overlay">
+        <div class="modal-content">
+            <button id="closeModal" class="close-button">&times;</button>
+            <img src="./images/modal/rps.png" alt="Combat Triangle" class="rps-image">
+        </div>
+    </div>
 
     <div class="container">
         <header class="title" id="main-header">
@@ -32,96 +43,108 @@
                 <img src="./images/exiliumarch/joker.png" alt="joker" class="img-avatar">
                 <h3>Joker</h3>
                 <p class="line-1">Ancient and Cursed</p>
-                <p class="line-2">Leviathan Horror</p>
-                <p class="line-3">Material World and Light</p>
+                <p class="line-2">Material World and Light</p>
+                <p class="line-3">Fighter</p>
+                <p class="line-4">Heavy</p>
             </a>
             
             <a href="#" class="card" onclick="GameManager.setGameStart('Sangunuus')">
                 <img src="./images/exiliumarch/sangunuus.png" alt="sangunuus" class="img-avatar">
                 <h3>Sangunuus</h3>
                 <p class="line-1">Blood and Borne</p>
-                <p class="line-2">Leviathan Horror</p>
-                <p class="line-3">Shinigami Blessing</p>
+                <p class="line-2">Shinigami Blessing</p>
+                <p class="line-3">Bloodletter</p>
+                <p class="line-4">Heavy</p>
             </a>
 
             <a href="#" class="card" onclick="GameManager.setGameStart('Khaos')">
                 <img src="./images/exiliumarch/khaos.png" alt="khaos" class="img-avatar">
                 <h3>Khaos</h3>
                 <p class="line-1">Eater of Names</p>
-                <p class="line-2">Mythos of Creation</p>
-                <p class="line-3">Twin Obscenities</p>
+                <p class="line-2">Twin Obscenities</p>
+                <p class="line-3">Assassin</p>
+                <p class="line-4">Control</p>
             </a>
 
             <a href="#" class="card" onclick="GameManager.setGameStart('Kosmos')">
                 <img src="./images/exiliumarch/kosmos.png" alt="kosmos" class="img-avatar">
                 <h3>Kosmos</h3>
                 <p class="line-1">The Omniversal Overseer</p>
-                <p class="line-2">Mythos of Creation</p>
-                <p class="line-3">Dimensional Omnicide</p>
+                <p class="line-2">Dimensional Omnicide</p>
+                <p class="line-3">Rogue</p>
+                <p class="line-4">Control</p>
               </a>
 
             <a href="#" class="card" onclick="GameManager.setGameStart('Voracium')">
                 <img src="./images/exiliumarch/voracium.png" alt="voracium" class="img-avatar">
                 <h3>Voracium</h3>
                 <p class="line-1">Devourer of Creation</p>
-                <p class="line-2">Metamorphosis of Living Nightmare</p>
-                <p class="line-3">False Sovereign</p>
+                <p class="line-2">False Sovereign</p>
+                <p class="line-3">Berserker</p>
+                <p class="line-4">Nuker</p>
             </a>
 
             <a href="#" class="card" onclick="GameManager.setGameStart('Malignis')">
                 <img src="./images/exiliumarch/malignis.png" alt="malignis" class="img-avatar">
                 <h3>Malignis</h3>
                 <p class="line-1">The Ultimate Phenomenon</p>
-                <p class="line-2">Metamorphosis of Living Nightmare</p>
-                <p class="line-3">Soulrend Decimator</p>
+                <p class="line-2">Soulrend Decimator</p>
+                <p class="line-3">Gladiator</p>
+                <p class="line-4">Control</p>
             </a>
 
             <a href="#" class="card" onclick="GameManager.setGameStart('Excidi')">
                 <img src="./images/exiliumarch/excidi.png" alt="excidi" class="img-avatar">
                 <h3>Excidi</h3>
                 <p class="line-1">Archon of Annihilation</p>
-                <p class="line-2">Limitless Inquisitor</p>
-                <p class="line-3">Necropulse Reaper</p>
+                <p class="line-2">Necropulse Reaper</p>
+                <p class="line-3">Decimator</p>
+                <p class="line-4">Heavy</p>
             </a>
 
             <a href="#" class="card" onclick="GameManager.setGameStart('Dominor')">
                 <img src="./images/exiliumarch/dominor.png" alt="dominor" class="img-avatar">
                 <h3>Dominor</h3>
                 <p class="line-1">The Sovereign of Supremacy</p>
-                <p class="line-2">Limitless Inquisitor</p>
-                <p class="line-3">Memento Mori</p>
+                <p class="line-2">Memento Mori</p>
+                <p class="line-3">Inquisitor</p>
+                <p class="line-4">Nuker</p>
             </a>
 
             <a href="#" class="card" onclick="GameManager.setGameStart('Arma')">
                 <img src="./images/exiliumarch/arma.png" alt="arma" class="img-avatar">
                 <h3>Arma</h3>
                 <p class="line-1">The Ultimate Omniblade</p>
-                <p class="line-2">Primarch of Fate</p>
-                <p class="line-3">Infinite Infinitus</p>
+                <p class="line-2">Infinite Infinitus</p>
+                <p class="line-3">Spellblade</p>
+                <p class="line-4">Heavy</p>
             </a>
 
             <a href="#" class="card" onclick="GameManager.setGameStart('Illusor')">
                 <img src="./images/exiliumarch/illusor.png" alt="illusor" class="img-avatar">
                 <h3>Illusor</h3>
                 <p class="line-1">Equilibrium of Creation</p>
-                <p class="line-2">Primarch of Fate</p>
-                <p class="line-3">Stalker among the Star</p>
+                <p class="line-2">Stalker among the Star</p>
+                <p class="line-3">Sorcerer</p>
+                <p class="line-4">Control</p>
             </a>
             
             <a href="#" class="card" onclick="GameManager.setGameStart('Amanuen')">
                 <img src="./images/exiliumarch/amanuen.png" alt="amanuen" class="img-avatar">
                 <h3>Amanuen</h3>
                 <p class="line-1">Dredged Entity</p>
-                <p class="line-2">Heavenly Emanator</p>
-                <p class="line-3">Scourge of Creation</p>
+                <p class="line-2">Scourge of Creation</p>
+                <p class="line-3">Conjurer</p>
+                <p class="line-4">Nuker</p>
             </a>
         
             <a href="#" class="card" onclick="GameManager.setGameStart('Deus')">
                 <img src="./images/exiliumarch/deus.png" alt="deus" class="img-avatar">
                 <h3>Deus</h3>
                 <p class="line-1">The Divine Delusion</p>
-                <p class="line-2">Heavenly Emanator</p>
-                <p class="line-3">Authority Over Ending</p>
+                <p class="line-2">Authority Over Ending</p>
+                <p class="line-3">Warlock</p>
+                <p class="line-4">Nuker</p>
             </a>
         </main>
 
@@ -145,5 +168,7 @@
 <script src="js/game.js"></script>
 <script src="js/enemy.js"></script>
 <script src="js/combat.js"></script>
+<script src="js/modal.js"></script>
+<script src="js/tooltip.js"></script>
 </body>
 </html>
