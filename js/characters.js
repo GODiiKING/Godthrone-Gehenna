@@ -1,37 +1,57 @@
+// js/characters.js
+
 // Central Database for perfectly mirrored balance
 const CharacterDatabase = {
-    "joker":      { name: "Joker",      health: 200, mana: 50,  strength: 200, agility: 100, speed: 50 },
-    "sangunuus":  { name: "Sangunuus",  health: 100, mana: 80,  strength: 150, agility: 120, speed: 60 },
-    "voracium":   { name: "Voracium",   health: 180, mana: 40,  strength: 220, agility: 80,  speed: 70 },
-    "khaos":      { name: "Khaos",      health: 150, mana: 100, strength: 180, agility: 150, speed: 80 },
-    "illusor":    { name: "Illusor",    health: 140, mana: 150, strength: 120, agility: 180, speed: 90 },
-    "amanuen":    { name: "Amanuen",    health: 250, mana: 60,  strength: 190, agility: 70,  speed: 40 },
-    "excidi":     { name: "Excidi",     health: 170, mana: 90,  strength: 210, agility: 110, speed: 75 },
-    "malignis":   { name: "Malignis",   health: 220, mana: 120, strength: 160, agility: 100, speed: 65 },
-    "dominor":    { name: "Dominor",    health: 190, mana: 130, strength: 200, agility: 140, speed: 85 },
-    "kosmos":     { name: "Kosmos",     health: 300, mana: 200, strength: 100, agility: 100, speed: 50 },
-    "deus":       { name: "Deus",       health: 160, mana: 180, strength: 130, agility: 150, speed: 95 },
-    "arma":       { name: "Arma",       health: 180, mana: 70,  strength: 230, agility: 160, speed: 100 }
+    "joker":      { name: "Joker",      weapon: "Material World and Light",   health: 200, magic: 50,  strength: 200, stamina: 100, speed: 50,  charClass: "Fighter",   type: "Heavy" },
+    "sangunuus":  { name: "Sangunuus",  weapon: "Shinigami Blessing",         health: 100, magic: 80,  strength: 150, stamina: 120, speed: 60,  charClass: "Bloodletter",      type: "Heavy" },
+    "voracium":   { name: "Voracium",   weapon: "False Sovereign",            health: 180, magic: 40,  strength: 220, stamina: 80,  speed: 70,  charClass: "Berserker",      type: "Nuker" },
+    "khaos":      { name: "Khaos",      weapon: "Twin Obscenities",           health: 150, magic: 100, strength: 180, stamina: 150, speed: 80,  charClass: "Assassin", type: "Control" },
+    "illusor":    { name: "Illusor",    weapon: "Stalker Among Star",         health: 140, magic: 150, strength: 120, stamina: 180, speed: 90,  charClass: "Sorcerer",  type: "Control" },
+    "amanuen":    { name: "Amanuen",    weapon: "Scourge of Creation",        health: 250, magic: 60,  strength: 190, stamina: 70,  speed: 40,  charClass: "Conjurer",  type: "Nuker" },
+    "excidi":     { name: "Excidi",     weapon: "Necropulse Reaper",          health: 170, magic: 90,  strength: 210, stamina: 110, speed: 75,  charClass: "Decimator",     type: "Heavy" },
+    "malignis":   { name: "Malignis",   weapon: "Soulrend Decimator",         health: 220, magic: 120, strength: 160, stamina: 100, speed: 65,  charClass: "Gladiator",   type: "Control" },
+    "dominor":    { name: "Dominor",    weapon: "Memento Mori",               health: 190, magic: 130, strength: 200, stamina: 140, speed: 85,  charClass: "Inquisitor",  type: "Nuker" },
+    "kosmos":     { name: "Kosmos",     weapon: "Dimensional Omnicide",       health: 300, magic: 200, strength: 100, stamina: 100, speed: 50,  charClass: "Rogue",    type: "Control" },
+    "deus":       { name: "Deus",       weapon: "Authority Over Ending",      health: 160, magic: 180, strength: 130, stamina: 150, speed: 95,  charClass: "Warlock",  type: "Nuker" },
+    "arma":       { name: "Arma",       weapon: "Infinite Infinitus",         health: 180, magic: 70,  strength: 230, stamina: 160, speed: 100, charClass: "Spellblade",    type: "Heavy" }
 };
 
-function Player(classType, health, mana, strength, agility, speed) {
+function Player(classType, health, magic, strength, stamina, speed) {
     this.classType = classType;
     this.health = health;
-    this.mana = mana;
+    this.magic = magic;
     this.strength = strength;
-    this.agility = agility;
+    this.stamina = stamina;
     this.speed = speed;
+    
+    // Tracks character-specific hooks, stacks, and modifiers
+    this.state = {
+        stacks: 0,
+        tempBuff: 0,
+        theftCap: 0,
+        mpGainFromDmg: false,
+        isDefending: false
+    };
 }
 
-function Enemy(enemyType, health, mana, strength, agility, speed) {
+function Enemy(enemyType, health, magic, strength, stamina, speed) {
     this.enemyType = enemyType;
     this.health = health;
-    this.mana = mana;
+    this.magic = magic;
     this.strength = strength;
-    this.agility = agility;
+    this.stamina = stamina;
     this.speed = speed;
+    
+    // UPDATED: Initialize all expected state properties here
+    this.state = {
+        bleed: 0,
+        stacks: 0,
+        tempBuff: 0,
+        theftCap: 0,
+        isDefending: false,
+        mpGainFromDmg: false
+    };
 }
 
-// Global state trackers
 let player;
 let enemy;
