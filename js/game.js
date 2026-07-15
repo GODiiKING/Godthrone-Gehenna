@@ -145,6 +145,8 @@ let GameManager = {
 
         let randomKey = keys[Math.floor(Math.random() * keys.length)];
         let template = CharacterDatabase[randomKey];
+        
+        updateEnemyShowcase(randomKey);
 
         let currentStreak = this.currentStreak;
         let isBossRound = (currentStreak > 0 && currentStreak % 3 === 0);
@@ -212,3 +214,13 @@ let GameManager = {
         }
     }
 };
+
+function updateEnemyShowcase(randomKey) {
+    const showcase = document.getElementById("enemyShowcase");
+    if (!showcase) return;
+
+    showcase.innerHTML = `
+        <img src="./images/exiliumarch/${randomKey}.png"
+             style="max-width: 100%; max-height: 100%; object-fit: contain;">
+    `;
+}

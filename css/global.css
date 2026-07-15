@@ -594,8 +594,8 @@ body {
 body:has(.enemy .card) {
     padding-top: 15px !important;    
     padding-bottom: 15px !important; 
-    padding-left: 20px;
-    padding-right: 20px;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
     height: 100vh !important;    /* THE FIX: Locks body to screen height */
     overflow: hidden !important; /* THE FIX: Stops vertical bouncing */
 }
@@ -658,6 +658,40 @@ body:has(.enemy .card) {
     display: flex !important;
     flex-direction: column;
     justify-content: center;
+}
+
+/* Allow full-width combat layout */
+body:has(.enemy .card) .container {
+    max-width: 100% !important;
+    width: 100% !important;
+}
+
+#enemyShowcase {
+    width: 100%;
+    height: 260px;
+    margin: 20px auto;
+    display: none; /* hidden until combat */
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    backdrop-filter: blur(10px);
+}
+
+body:has(.enemy .card) #enemyShowcase {
+    display: flex !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+
+    /* Remove old borders & glow */
+    border: none !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+
+    /* Background image */
+    background: url("./images/combatbackground.png")
+                center center / cover no-repeat !important;
 }
 
 /* Hide scrollbars for the new console */
