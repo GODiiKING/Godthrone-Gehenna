@@ -374,6 +374,26 @@ body {
     display: none;
 }
 
+/* RESTORED: Both your player and enemy cards remain their standard matching sizes! */
+#character-grid, .enemy {
+    width: 100% !important;
+    max-width: 720px !important;
+    margin: 0 auto !important;
+}
+
+/* NEW SPACING FIX: Forces stacked sections to sit tight in the new top-to-bottom layout flow */
+.enemy + #combatConsole,
+#combatConsole + .actions,
+.actions + #character-grid {
+    margin-top: 15px !important; 
+    margin-bottom: 0px !important; 
+}
+
+/* Hides default scrollbar tracks for Webkit engines (Chrome, Safari, Opera) */
+#combatConsole::-webkit-scrollbar {
+    display: none;
+}
+
 /* RESTORED: Back to your exact structural container layouts.
    Both your player and enemy cards remain their standard matching sizes! */
 #character-grid, .enemy {
@@ -566,4 +586,85 @@ body {
     opacity: 1;
     visibility: visible;
     transform: translateY(0);
+}
+
+/* 13. COMBAT SCREEN EDGE LAYOUT */
+
+/* 1. Lock the body perfectly to the monitor glass */
+body:has(.enemy .card) {
+    padding-top: 15px !important;    
+    padding-bottom: 15px !important; 
+    padding-left: 20px;
+    padding-right: 20px;
+    height: 100vh !important;    /* THE FIX: Locks body to screen height */
+    overflow: hidden !important; /* THE FIX: Stops vertical bouncing */
+}
+
+/* 2. Force the container to stretch the full height so the bottom isn't empty */
+.container:has(.enemy .card) {
+    height: 100% !important;     /* THE FIX: Stretches down to the bottom */
+    display: flex;
+    flex-direction: column;
+}
+
+/* Completely hide the title header during combat */
+.container:has(.enemy .card) .title {
+    display: none !important;
+}
+
+/* 3. Pin the enemy card to the very top edge */
+.container:has(.enemy .card) .enemy {
+    margin-top: 0 !important;
+    margin-bottom: 0 !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+}
+
+/* 4. Push the action buttons AND player card to the bottom */
+.container:has(.enemy .card) #combatConsole + .actions {
+    margin-top: auto !important; /* Pushes everything below it to the bottom */
+    margin-bottom: 0 !important;
+}
+
+/* Keep the player card at the bottom with your custom 9px gap */
+.container:has(.enemy .card) #character-grid {
+    margin-top: 9px !important; 
+    margin-bottom: 0 !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+}
+
+/* 5. Transform the consoles into fixed boxes beside the player */
+.container:has(.enemy .card) #combatConsole,
+.container:has(.enemy .card) #realmConsole {
+    position: fixed !important;
+    bottom: 15px !important;     
+    width: 320px !important;     
+    max-width: 320px !important; 
+    height: 200px !important;    
+    max-height: 250px !important;
+    margin: 0 !important; 
+    z-index: 1000 !important;
+}
+
+/* Pushes combat log to the right */
+.container:has(.enemy .card) #combatConsole {
+    right: 20px !important; 
+}
+
+/* Pushes realm info to the left */
+.container:has(.enemy .card) #realmConsole {
+    left: 20px !important; 
+    display: flex !important;
+    flex-direction: column;
+    justify-content: center;
+}
+
+/* Hide scrollbars for the new console */
+#realmConsole::-webkit-scrollbar {
+    display: none;
+}
+#realmConsole {
+    scrollbar-width: none; 
+    -ms-overflow-style: none; 
 }

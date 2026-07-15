@@ -38,6 +38,18 @@
         <header class="title" id="main-header">
         </header>
 
+        <!-- 1. ENEMY CARD SECTION (Now at the top of combat) -->
+        <div class="enemy" style="display: flex; justify-content: center; width: 100%; margin: 20px 0;"></div>
+
+        <!-- 2. COMBAT CONSOLE SECTION -->
+        <div id="realmConsole" style="display: none; max-width: 720px; margin: 20px auto; padding: 15px; background: #020224; border: 1px solid #ffc048; color: #fff; font-family: 'Lexend Exa', sans-serif; font-size: 13px; line-height: 1.6; text-align: center; border-radius: 8px; max-height: 120px; overflow-y: auto; box-shadow: 0 0 15px rgba(255, 192, 72, 0.2);"></div>
+
+        <div id="combatConsole" style="display: none; max-width: 720px; margin: 20px auto; padding: 15px; background: #020224; border: 1px solid #ff6b9d; color: #fff; font-family: 'Lexend Exa', sans-serif; font-size: 13px; line-height: 1.6; text-align: center; border-radius: 8px; max-height: 120px; overflow-y: auto; box-shadow: 0 0 15px rgba(255, 107, 157, 0.2);"></div>
+
+        <!-- 3. ACTION BUTTONS (In the middle) -->
+        <div class="actions" style="text-align: center; margin: 20px 0;"></div>
+
+        <!-- 4. PLAYER CARD / CHARACTER SELECTION GRID (Now at the bottom) -->
         <main class="interface" id="character-grid">
             <a href="#" class="card" onclick="GameManager.setGameStart('Joker')">
                 <img src="./images/exiliumarch/joker.png" alt="joker" class="img-avatar">
@@ -148,12 +160,7 @@
             </a>
         </main>
 
-        <div class="actions" style="text-align: center; margin: 20px 0;"></div>
-        
-        <div id="combatConsole" style="display: none; max-width: 720px; margin: 20px auto; padding: 15px; background: #020224; border: 1px solid #ff6b9d; color: #fff; font-family: 'Lexend Exa', sans-serif; font-size: 13px; line-height: 1.6; text-align: center; border-radius: 8px; max-height: 120px; overflow-y: auto; box-shadow: 0 0 15px rgba(255, 107, 157, 0.2);"></div>
-
         <div class="arena"></div>
-        <div class="enemy" style="display: flex; justify-content: center; width: 100%; margin: 20px 0;"></div>
     </div>
 
     <button id="scrollToTop" onclick="scrollToTop()" aria-label="Scroll back to top"

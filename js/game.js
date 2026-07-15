@@ -20,6 +20,13 @@ let GameManager = {
             consoleEl.innerHTML = "";
         }
 
+        // ADD THIS NEW BLOCK:
+        const realmConsoleEl = document.getElementById("realmConsole");
+        if (realmConsoleEl) {
+            realmConsoleEl.style.display = "flex";
+            realmConsoleEl.innerHTML = "";
+        }
+
         this.rollRealmShift();
         this.resetPlayer(classType);
         this.setPreFight();

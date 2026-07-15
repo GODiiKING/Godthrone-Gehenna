@@ -33,5 +33,22 @@ function printLog(message, color = "#ffffff") {
 
 function printRealmLog(realm) {
     if (!realm) return;
-    printLog(`🌌 CURRENT REALM: ${realm.name} - ${realm.desc}`, "#ffc048");
+    const realmConsoleEl = document.getElementById("realmConsole");
+    if (!realmConsoleEl) return;
+
+    realmConsoleEl.innerHTML = ""; 
+
+    const titleLine = document.createElement("div");
+    titleLine.style.color = "#ffc048";
+    titleLine.style.fontWeight = "700";
+    titleLine.style.marginBottom = "10px";
+    titleLine.style.textShadow = "0 0 8px rgba(255, 192, 72, 0.4)";
+    titleLine.innerHTML = `🌌 CURRENT REALM: <br> ${realm.name}`;
+    
+    const descLine = document.createElement("div");
+    descLine.style.color = "#d5c8af";
+    descLine.innerHTML = realm.desc;
+
+    realmConsoleEl.appendChild(titleLine);
+    realmConsoleEl.appendChild(descLine);
 }
