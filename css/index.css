@@ -1,44 +1,85 @@
-html, body {
-  height: 100%;
-  width: 100%;
-  margin: 0;
+/* Background wrapper */
+.bg-wrapper {
+    position: fixed;
+    inset: 0;
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+    z-index: -1;
+    background-color: black; /* FIXES WHITE SCREEN */
+}
 
-  /* Your background image */
-  background-image: url('../images/godthronegehenna.png');
 
-  /* This makes the image ALWAYS fill the screen */
-  background-size: cover;
+/* Default: desktop layout (Image 1) */
+/* Desktop: Image 1 layout */
+.bg-image {
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    height: 100%;
+    width: auto;
+    object-fit: contain;
+}
 
-  /* Prevents tiling */
-  background-repeat: no-repeat;
 
-  /* Keeps the image centered */
-  background-position: center center;
 
-  /* Allows the image to scale on phones */
-  background-attachment: scroll;
 
-  /* IMPORTANT: allow scaling */
-  overflow: visible;
+.title-wrapper {
+    position: relative;
+    z-index: 10;
+    height: 100vh;          /* full screen height */
+    width: 100vw;           /* full screen width */
+    display: flex;
+    flex-direction: column;
+    justify-content: center; /* vertical centering */
+    align-items: center;     /* horizontal centering */
+    text-align: center;
+}
+
+
+
+.game-title {
+    font-size: clamp(2rem, 6vw, 6rem);
+    color: white;
+    margin: 0;
+    letter-spacing: 4px;
+}
+
+.subtitle {
+    font-size: clamp(1rem, 3vw, 2rem);
+    color: #c0c0c0;
+    margin-bottom: 40px;
+}
+
+.play-button {
+    margin-top: -20px; /* moves button UP */
+}
+
+
+
+
+.play-button:hover {
+    background-color: #1b1b1b;
 }
 
 
 /* full-screen flex centering instead of absolute px */
 .start-container {
-  height: 100vh;
+  min-height: 100vh;
   width: 100vw;
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
+
 .button-container {
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 100vh;   /* full screen height */
-  width: 100vw;    /* full screen width */
 }
+
 
 
 .play-button {
@@ -71,8 +112,28 @@ html, body {
   color: #1b1b1b;
 }
 
+/* Tablet & phone: Image 2 layout */
 @media (max-width: 768px) {
-  html, body {
-    background-position: center top;
-  }
+    .bg-image {
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
+        width: 100%;
+        height: auto;
+        object-fit: contain;
+    }
+}
+
+/* Tiny screens: flip if needed */
+@media (max-width: 480px) {
+    .bg-image {
+        transform: translate(-50%, -50%) scaleX(-1);
+    }
+}
+
+
+@media (max-width: 480px) {
+    .bg-image {
+        transform: translate(-50%, -50%) scaleX(-1);
+    }
 }
