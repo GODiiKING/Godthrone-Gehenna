@@ -1,47 +1,55 @@
 html, body {
   height: 100%;
+  width: 100%;
   margin: 0;
+
+  /* Your background image */
   background-image: url('../images/godthronegehenna.png');
+
+  /* This makes the image ALWAYS fill the screen */
   background-size: cover;
+
+  /* Prevents tiling */
   background-repeat: no-repeat;
-  background-attachment: fixed;
-  background-position: center;
-  overflow: hidden;
+
+  /* Keeps the image centered */
+  background-position: center center;
+
+  /* Allows the image to scale on phones */
+  background-attachment: scroll;
+
+  /* IMPORTANT: allow scaling */
+  overflow: visible;
 }
 
-.Game-Controls-Title,
-.Game-Description-Title {
-  background-color: #000000;
-  color: #FFFFFF;
-  margin-top: 1px;
-  margin-bottom: 0;
-  padding: 2px;
-  border-radius: 1px;
-  font-family: 'Acme', sans-serif;
-}
 
-p {
-  color: #0B0A07;
+/* full-screen flex centering instead of absolute px */
+.start-container {
+  height: 100vh;
+  width: 100vw;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .button-container {
-  position: absolute;
-  top: 49%;
-  left: 55%;
-  transform: translate(-50%, -50%);
-  text-align: center;
-  margin-top: 75px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;   /* full screen height */
+  width: 100vw;    /* full screen width */
 }
+
 
 .play-button {
   display: inline-block;
   background-color: #000000;
   color: #FFFFFF;
   text-decoration: none;
-  font-size: 20px;
+  font-size: clamp(1rem, 2vw, 1.25rem);
   padding: 10px 20px;
   border: none;
-  border-radius: 1px;
+  border-radius: 4px;
   cursor: pointer;
   transition: background-color 0.3s;
   text-align: center;
@@ -63,42 +71,8 @@ p {
   color: #1b1b1b;
 }
 
-.audio-section {
-  text-align: left;
-}
-
-.audio-section audio {
-  background-color: #000000;
-  border: 2px solid #000000;
-  border-radius: 10px;
-  padding: 5px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
-  color: #d5c8af;
-}
-
-.audio-section h4 {
-  margin-bottom: 10px;
-  font-size: 1.2em;
-  color: #f8b700;
-}
-
 @media (max-width: 768px) {
   html, body {
-    background-image: url('../images/godthronegehenna.png');
-    background-size: cover;
     background-position: center top;
-  }
-
-  canvas {
-    width: 100%;
-    height: auto;
-  }
-
-  .Game-Title {
-    font-size: 2.5rem;
-    text-align: center;
-    padding: 0 15px;
-    margin-top: 10px;
-    color: #FFFFFF;
   }
 }

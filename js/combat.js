@@ -466,24 +466,24 @@ let PlayerMoves = {
         }
     },
 
-    endMatch: function(outcome) {
-        GameManager.isGameOver = true;
-        if (outcome === "win") {
-            GameManager.currentStreak += 1;
-            localStorage.setItem("godthrone_streak", GameManager.currentStreak);
-            printLog(`🏆 VICTORY! You have conquered this trial round.`, "#4cd137");
-            document.querySelector(".actions").innerHTML = `
-                <button class="menu-toggle" style="animation: RadialGlow 2s infinite;" onclick="GameManager.setGameStart(GameManager.selectedClass)">Advance to Next Trial ⚔️</button>
-            `;
-        } else {
-            GameManager.currentStreak = 0;
-            localStorage.setItem("godthrone_streak", 0);
-            printLog("💀 DEFEATED! Your cosmic run has collapsed.", "#ff4757");
-            document.querySelector(".actions").innerHTML = `
-                <button class="menu-toggle border-pink" onclick="window.location.reload()">Return to Character Select</button>
-            `;
-        }
+   endMatch: function(outcome) {
+    GameManager.isGameOver = true;
+    if (outcome === "win") {
+        GameManager.currentStreak += 1;
+        localStorage.setItem("godthrone_streak", GameManager.currentStreak);
+        printLog(`🏆 VICTORY! You have conquered this trial round.`, "#4cd137");
+        document.querySelector(".actions").innerHTML = `
+            <button class="menu-toggle" style="animation: RadialGlow 2s infinite;" onclick="advanceTrial()">Advance to Next Trial ⚔️</button>
+        `;
+    } else {
+        GameManager.currentStreak = 0;
+        localStorage.setItem("godthrone_streak", 0);
+        printLog("💀 DEFEATED! Your cosmic run has collapsed.", "#ff4757");
+        document.querySelector(".actions").innerHTML = `
+            <button class="menu-toggle border-pink" onclick="window.location.reload()">Return to Character Select</button>
+        `;
     }
+}
 };
 
 function spawnDamageText(text, targetElement) {
