@@ -15,78 +15,78 @@ body.vn-active {
     position: relative;
 }
 
-.vnViewport .dialogueContainer {
-    position: absolute;
-    bottom: 20px;   /* move textbox UP or DOWN */
-    left: 50%;
-    transform: translateX(-50%);
-}
-
-/* Background layer handling the dark shading tint */
-.vnViewport::before {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    
-    /* THE FIRST VALUE CONTROLS THE SHADING TINT */
-    /* 0.5 means fifty percent black shade over the image */
-    background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.5)), url('../images/novelbackground.png') no-repeat center center fixed;
-    background-size: cover;
-    
-    z-index: -1;
-}
-
+/* --- FULLSCREEN VN VIEWPORT --- */
 .vnViewport {
     position: relative;
     width: 100vw;
     height: 100vh;
-    max-width: 1280px;
-    max-height: 720px;
+    overflow: hidden;
     background: transparent;
     display: flex;
     flex-direction: column;
     justify-content: flex-end;
-    padding: 40px;
+    padding: 0; /* IMPORTANT: removes borders */
 }
 
-.characterLayer {
+/* Tint overlay */
+.vnViewport::before {
+    content: "";
     position: absolute;
-    top: 0;
-    left: 0;
+    inset: 0;
+    background: rgba(0,0,0,0.5);
+    z-index: -1;
+}
+
+/* Background image */
+.vn-bg {
+    position: absolute;
+    inset: 0;
     width: 100%;
     height: 100%;
+    object-fit: cover; /* perfect fullscreen scaling */
+    z-index: -2;
+    pointer-events: none;
+}
+
+/* Dialogue box positioning */
+.vnViewport .dialogueContainer {
+    position: absolute;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+/* Character sprites */
+.characterLayer {
+    position: absolute;
+    inset: 0;
     pointer-events: none;
     z-index: 1;
 }
 
 .spriteElement {
     position: absolute;
-    bottom: 100px; /* Sunk down from 180px to sit perfectly on and behind the text box */
-    max-height: 520px; /* Increased slightly so they still loom large over the interface */
+    bottom: 100px;
+    max-height: 520px;
     object-fit: contain;
     opacity: 0;
     transition: opacity 0.4s ease;
 }
 
-/* UNIVERSAL LEFT POSITION */
 .leftSprite {
     left: 139px;
     transform: scaleX(-1);
 }
 
-/* UNIVERSAL RIGHT POSITION */
 .rightSprite {
     right: 100px;
-    transform: none;
 }
 
 .spriteElement.active {
     opacity: 1;
 }
 
+/* Dialogue UI */
 .dialogueContainer {
     position: relative;
     width: 100%;
