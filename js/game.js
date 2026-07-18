@@ -8,16 +8,10 @@ let GameManager = {
     linearOrder: [
         "joker",
         "sangunuus",
-        "voracium",
-        "khaos",
         "kosmos",
-        "malignis",
-        "excidi",
         "dominor",
-        "arma",
-        "illusor",
-        "amanuen",
-        "deus"
+        "deus",
+        "deus",
     ],
 
     currentLinearIndex: 0,
