@@ -276,3 +276,21 @@ function endGameSequence() {
     `;
 }
 
+// ===============================
+// GLOBAL INPUT LOCKDOWN FOR GAME
+// ===============================
+
+// Disable text selection everywhere
+document.addEventListener("selectstart", function(e) {
+    e.preventDefault();
+});
+
+// Disable dragging to highlight
+document.addEventListener("mousedown", function(e) {
+    e.preventDefault();
+});
+
+// Disable right-click context menu
+document.addEventListener("contextmenu", function(e) {
+    e.preventDefault();
+});
