@@ -56,31 +56,41 @@ body.vn-active {
     transform: translateX(-50%);
 }
 
-/* Character sprites */
-.characterLayer {
-    position: absolute;
-    inset: 0;
-    pointer-events: none;
-    z-index: 1;
-}
+/* --- SPRITES SITTING ON THE TEXTBOX --- */
 
 .spriteElement {
     position: absolute;
-    bottom: 100px;
-    max-height: 520px;
+    bottom: 105px;
+
+    /* FORCE REAL SIZE INSTEAD OF JUST A LIMIT */
+    height: 60vh;          /* big, VN-style height */
+    width: auto;
     object-fit: contain;
+
     opacity: 0;
     transition: opacity 0.4s ease;
 }
 
-.leftSprite {
-    left: 139px;
-    transform: scaleX(-1);
+
+/* LEFT SPRITE */
+#vnSpriteLeft {
+    left: 210px; /* Move rightward so it sits ON the textbox */
 }
 
-.rightSprite {
-    right: 100px;
+/* RIGHT SPRITE */
+#vnSpriteRight {
+    right: 210px; /* Move leftward so it sits ON the textbox */
 }
+
+
+/* --------------------------------------------------
+   ACTIVE SPRITE FADE-IN
+-------------------------------------------------- */
+.spriteElement.active {
+    opacity: 1;
+}
+
+
 
 .spriteElement.active {
     opacity: 1;
