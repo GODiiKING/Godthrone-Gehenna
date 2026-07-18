@@ -1,0 +1,217 @@
+/* --- 8. COMBAT LAYOUT EXPANSION FIXES --- */
+#combatConsole {
+    width: 100% !important;
+    max-width: 720px !important;
+    margin: 20px auto !important;
+    background: rgba(0, 0, 0, 0.4);
+    border: 1px solid rgba(255, 107, 157, 0.2);
+    border-radius: 12px;
+    padding: 15px 20px;
+    font-size: 0.7rem;
+    line-height: 1.6;
+    box-sizing: border-box;
+    max-height: 180px;
+    overflow-y: auto;
+    backdrop-filter: blur(10px);
+    scrollbar-width: none; 
+    -ms-overflow-style: none; 
+}
+
+#combatConsole::-webkit-scrollbar {
+    display: none;
+}
+
+#character-grid, .enemy {
+    width: 100% !important;
+    max-width: 720px !important;
+    margin: 0 auto !important;
+}
+
+.enemy + #combatConsole,
+#combatConsole + .actions,
+.actions + #character-grid {
+    margin-top: 15px !important; 
+    margin-bottom: 0px !important; 
+}
+
+#character-grid + button, 
+#character-grid + div,
+#character-grid + a {
+    margin-top: 15px !important; 
+    margin-bottom: 0px !important; 
+}
+
+/* --- 9. COSMIC COMBAT EFFECTS & ANIMATIONS --- */
+@keyframes cosmicShake {
+    0%, 100% { transform: translate(0, 0); }
+    10%, 30%, 50%, 70%, 90% { transform: translate(-4px, 2px); }
+    20%, 40%, 60%, 80% { transform: translate(4px, -2px); }
+}
+
+.shake-active {
+    animation: cosmicShake 0.4s cubic-bezier(.36,.07,.19,.97) both;
+}
+
+@keyframes flashEnemyHit {
+    0% { background: radial-gradient(circle at 50% 20%, #da4a6c, #000000 75%); }
+    100% { background: radial-gradient(circle at 50% 20%, #020224, #000000 60%); }
+}
+.flash-enemy {
+    animation: flashEnemyHit 0.4s ease-out forwards;
+}
+
+@keyframes flashPlayerHit {
+    0% { background: radial-gradient(circle at 50% 20%, #57cf61, #000000 75%); }
+    100% { background: radial-gradient(circle at 50% 20%, #020224, #000000 60%); }
+}
+.flash-player {
+    animation: flashPlayerHit 0.4s ease-out forwards;
+}
+
+/* --- 10. COSMIC VITALITY & MANA BARS --- */
+.stat-bar-container {
+    width: 100%;
+    height: 8px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 4px;
+    margin: 6px 0 12px 0;
+    overflow: hidden;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.5);
+}
+
+.stat-bar-fill {
+    height: 100%;
+    width: 100%;
+    transition: width 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.bg-player-health {
+    background: #ff6b9d;
+    box-shadow: 0 0 8px rgba(255, 107, 157, 0.8);
+}
+
+.bg-enemy-health {
+    background: #da4a6c;
+    box-shadow: 0 0 8px rgba(218, 74, 108, 0.8);
+}
+
+.bg-mana {
+    background: #ffc048;
+    box-shadow: 0 0 8px rgba(255, 192, 72, 0.8);
+}
+
+.damage-popup {
+    position: absolute;
+    animation: floatUp 0.8s ease-out forwards;
+    font-family: 'Acme', sans-serif;
+    color: #ff6b9d;
+    font-size: 2rem;
+    pointer-events: none;
+    z-index: 1000;
+}
+
+@keyframes floatUp {
+    0% { transform: translateY(0); opacity: 1; }
+    100% { transform: translateY(-50px); opacity: 0; }
+}
+
+/* --- 13. COMBAT SCREEN EDGE LAYOUT --- */
+body:has(.enemy .card) {
+    padding-top: 15px !important;    
+    padding-bottom: 15px !important; 
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+    height: 100vh !important;
+    overflow: hidden !important;
+}
+
+.container:has(.enemy .card) {
+    height: 100% !important;
+    display: flex;
+    flex-direction: column;
+}
+
+.container:has(.enemy .card) .title {
+    display: none !important;
+}
+
+.container:has(.enemy .card) .enemy {
+    margin-top: 0 !important;
+    margin-bottom: 0 !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+}
+
+.container:has(.enemy .card) #combatConsole + .actions {
+    margin-top: auto !important;
+    margin-bottom: 0 !important;
+}
+
+.container:has(.enemy .card) #character-grid {
+    margin-top: 9px !important; 
+    margin-bottom: 0 !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+}
+
+.container:has(.enemy .card) #combatConsole,
+.container:has(.enemy .card) #realmConsole {
+    position: fixed !important;
+    bottom: 15px !important;     
+    width: 320px !important;     
+    max-width: 320px !important; 
+    height: 200px !important;    
+    max-height: 250px !important;
+    margin: 0 !important; 
+    z-index: 1000 !important;
+}
+
+.container:has(.enemy .card) #combatConsole {
+    right: 20px !important; 
+}
+
+.container:has(.enemy .card) #realmConsole {
+    left: 20px !important; 
+    display: flex !important;
+    flex-direction: column;
+    justify-content: center;
+}
+
+body:has(.enemy .card) .container {
+    max-width: 100% !important;
+    width: 100% !important;
+}
+
+#enemyShowcase {
+    width: 100%;
+    height: 260px;
+    margin: 20px auto;
+    display: none;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    backdrop-filter: blur(10px);
+}
+
+body:has(.enemy .card) #enemyShowcase {
+    display: flex !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+    border: none !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+    background: url("./images/combatbackground.png")
+                center center / cover no-repeat !important;
+}
+
+#realmConsole::-webkit-scrollbar {
+    display: none;
+}
+
+#realmConsole {
+    scrollbar-width: none; 
+    -ms-overflow-style: none; 
+}

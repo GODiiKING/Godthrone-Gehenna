@@ -1,0 +1,100 @@
+/* --- MENU.CSS --- */
+
+/* CARD-STYLE MENU SYSTEM */
+.menu-panel {
+    position: fixed;
+    top: 15px;
+    right: 15px;
+    z-index: 1000;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+}
+
+.menu-toggle {
+    position: relative;
+    background: rgba(255, 255, 255, 0.02);
+    color: #ffffff;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    padding: 8px 16px;
+    border-radius: 10px; 
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 1.2px;
+    text-transform: uppercase;
+    cursor: pointer;
+    font-family: 'Lexend Exa', sans-serif;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    backdrop-filter: blur(10px);
+    overflow: hidden;
+    transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.menu-toggle:hover {
+    transform: translateY(-2px) scale(1.02);
+    border-color: #ff6b9d;
+    box-shadow: 0 5px 15px rgba(255, 107, 157, 0.2);
+}
+
+/* Secret Sauce Glow */
+.menu-toggle::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle at 50% 0%, rgba(255, 107, 157, 0.15), transparent 70%);
+    opacity: 0;
+    transition: 0.4s;
+}
+
+.menu-toggle:hover::before { 
+    opacity: 1; 
+}
+
+.menu-toggle::after {
+    content: "";
+    position: absolute;
+    top: -120%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: linear-gradient(120deg, transparent, rgba(80, 39, 39, 0.1), transparent);
+    transform: rotate(25deg);
+    transition: 0.6s;
+}
+
+.menu-toggle:hover::after { 
+    top: 120%; 
+}
+
+/* DROPDOWN MENU */
+#menuContent {
+    display: none;
+    background: rgba(0, 0, 0, 0.95);
+    border: 1px solid rgba(255, 107, 157, 0.3);
+    padding: 6px;
+    margin-top: 6px;
+    border-radius: 10px;
+    min-width: 120px;
+    backdrop-filter: blur(15px);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.8);
+    animation: menuSlide 0.3s ease forwards;
+}
+
+#menuContent a {
+    display: block;
+    color: #ff6b9d;
+    padding: 6px 10px;
+    font-size: 0.65rem;
+    font-weight: 600;
+    text-align: right;
+    transition: all 0.2s ease;
+    border-radius: 6px;
+}
+
+#menuContent a:hover {
+    color: #ffffff;
+    background: rgba(255, 107, 157, 0.1);
+    transform: translateX(-3px);
+}
