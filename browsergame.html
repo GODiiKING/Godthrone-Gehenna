@@ -174,19 +174,20 @@
     <!-- VISUAL NOVEL VIEWPORT (FULLSCREEN) -->
     <div class="vnViewport" style="display:none;">
     <img class="vn-bg" src="./images/novelbackground.png" alt="">
-    <div class="characterLayer">
-        <img id="vnSpriteLeft" class="spriteElement leftSprite" src="" alt="">
-        <img id="vnSpriteRight" class="spriteElement rightSprite" src="" alt="">
-    </div>
 
     <div class="dialogueContainer">
+        <img id="vnSpriteLeft" class="spriteElement leftSprite" src="">
+        <img id="vnSpriteRight" class="spriteElement rightSprite" src="">
+
         <div id="speakerName" class="speakerLabel"></div>
+
         <div id="interactiveBox" class="dialogueWindow">
             <p id="sceneText"></p>
             <div class="actionPrompt">Click window to advance</div>
         </div>
     </div>
     </div>
+
 
 
     <button id="scrollToTop" onclick="scrollToTop()" aria-label="Scroll back to top"

@@ -25,7 +25,7 @@ body.vn-active {
     display: flex;
     flex-direction: column;
     justify-content: flex-end;
-    padding: 0; /* IMPORTANT: removes borders */
+    padding: 0;
 }
 
 /* Tint overlay */
@@ -43,68 +43,61 @@ body.vn-active {
     inset: 0;
     width: 100%;
     height: 100%;
-    object-fit: cover; /* perfect fullscreen scaling */
+    object-fit: cover;
     z-index: -2;
     pointer-events: none;
 }
 
-/* Dialogue box positioning */
+/* Dialogue box positioning (CORRECT VERSION — ONLY THIS ONE) */
 .vnViewport .dialogueContainer {
     position: absolute;
     bottom: 20px;
     left: 50%;
     transform: translateX(-50%);
-}
-
-/* --- SPRITES SITTING ON THE TEXTBOX --- */
-
-.spriteElement {
-    position: absolute;
-    bottom: 105px;
-
-    /* FORCE REAL SIZE INSTEAD OF JUST A LIMIT */
-    height: 60vh;          /* big, VN-style height */
-    width: auto;
-    object-fit: contain;
-
-    opacity: 0;
-    transition: opacity 0.4s ease;
-}
-
-
-/* LEFT SPRITE */
-#vnSpriteLeft {
-    left: 210px; /* Move rightward so it sits ON the textbox */
-}
-
-/* RIGHT SPRITE */
-#vnSpriteRight {
-    right: 210px; /* Move leftward so it sits ON the textbox */
-}
-
-
-/* --------------------------------------------------
-   ACTIVE SPRITE FADE-IN
--------------------------------------------------- */
-.spriteElement.active {
-    opacity: 1;
-}
-
-
-
-.spriteElement.active {
-    opacity: 1;
-}
-
-/* Dialogue UI */
-.dialogueContainer {
-    position: relative;
     width: 100%;
     max-width: 1100px;
     margin: 0 auto;
     z-index: 10;
 }
 
+/* --- SPRITES SITTING ON THE TEXTBOX --- */
+.spriteElement {
+    position: absolute;
+    bottom: 105px;
+    height: 60vh;
+    width: auto;
+    object-fit: contain;
+    opacity: 0;
+    transition: opacity 0.4s ease;
+}
+
+/* LEFT SPRITE — horizontal movement */
+#vnSpriteLeft.posLeft100 { left: 100px; }
+#vnSpriteLeft.posLeft300 { left: 300px; }
+#vnSpriteLeft.posLeft600 { left: 600px; }
+
+/* LEFT SPRITE — vertical movement */
+#vnSpriteLeft.posLeftUp   { bottom: 150px; }
+#vnSpriteLeft.posLeftDown { bottom: 50px; }
+
+/* RIGHT SPRITE — FORCE RIGHT SIDE ANCHOR */
+#vnSpriteRight {
+    right: 0;
+    left: auto;
+    bottom: 100px;
+}
+
+/* RIGHT SPRITE — horizontal movement */
+#vnSpriteRight.posRight120 { right: 120px; }
+#vnSpriteRight.posRight380 { right: 380px; }
+#vnSpriteRight.posRight720 { right: 720px; }
+
+/* ACTIVE SPRITE FADE-IN */
+.spriteElement.active {
+    opacity: 1;
+}
+
+/* Dialogue UI */
 .speakerLabel {
     font-family: 'Acme', sans-serif;
     font-size: 2rem;
