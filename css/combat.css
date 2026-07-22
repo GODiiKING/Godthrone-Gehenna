@@ -215,3 +215,15 @@ body:has(.enemy .card) #enemyShowcase {
     scrollbar-width: none; 
     -ms-overflow-style: none; 
 }
+
+/* --- FINAL FIX: ALIGN PLAYER CARD WITH SIDE CARDS --- */
+.container:has(.enemy .card) #character-grid {
+    margin-top: 56px !important;
+}
+
+/* --- MOVE ONLY THE ACTION BUTTON BAR --- */
+.container:has(.enemy .card) .actions {
+    transform: translateY(40px) !important;
+    position: relative !important;
+    z-index: 10 !important;
+}
