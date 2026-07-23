@@ -1,16 +1,16 @@
 /* --- 8. COMBAT LAYOUT EXPANSION FIXES --- */
 #combatConsole {
     width: 100% !important;
-    max-width: 720px !important;
+    max-width: min(90vw, 720px) !important;
     margin: 20px auto !important;
     background: rgba(0, 0, 0, 0.4);
     border: 1px solid rgba(255, 107, 157, 0.2);
     border-radius: 12px;
     padding: 15px 20px;
-    font-size: 0.7rem;
+    font-size: clamp(0.6rem, 1.4vw, 0.8rem);
     line-height: 1.6;
     box-sizing: border-box;
-    max-height: 180px;
+    max-height: clamp(140px, 24vh, 200px);
     overflow-y: auto;
     backdrop-filter: blur(10px);
     scrollbar-width: none;
@@ -24,18 +24,15 @@
 #character-grid,
 .enemy {
     width: 100% !important;
-    max-width: 720px !important;
+    max-width: min(90vw, 720px) !important;
     margin: 0 auto !important;
 }
-
-/* ⭐ ACTION CARD SPACING — NORMAL MODE (optional) ⭐ */
-
 
 /* ⭐ PLAYER CARD SPACING — NORMAL MODE ⭐ */
 #character-grid + button,
 #character-grid + div,
 #character-grid + a {
-    margin-top: 15px !important;
+    margin-top: clamp(10px, 2vh, 20px) !important;
     margin-bottom: 0 !important;
 }
 
@@ -104,7 +101,7 @@
     animation: floatUp 0.8s ease-out forwards;
     font-family: 'Acme', sans-serif;
     color: #ff6b9d;
-    font-size: 2rem;
+    font-size: clamp(1.4rem, 3vw, 2rem);
     pointer-events: none;
     z-index: 1000;
 }
@@ -116,8 +113,8 @@
 
 /* --- 13. COMBAT SCREEN EDGE LAYOUT --- */
 body:has(.enemy .card) {
-    padding-top: 15px !important;
-    padding-bottom: 15px !important;
+    padding-top: clamp(10px, 2vh, 20px) !important;
+    padding-bottom: clamp(10px, 2vh, 20px) !important;
     padding-left: 0 !important;
     padding-right: 0 !important;
     height: 100vh !important;
@@ -141,39 +138,39 @@ body:has(.enemy .card) {
     margin-right: auto !important;
 }
 
-/* ⭐ ACTION CARDS — COMBAT MODE (independent movement) ⭐ */
+/* ⭐ ACTION CARDS — COMBAT MODE (fluid movement) ⭐ */
 .container:has(.enemy .card) .actions {
     position: relative;
-    top: 44px; /* same value you already use */
+    top: clamp(24px, 4vw, 60px) !important;
 }
 
-/* ⭐ PLAYER CARD — COMBAT MODE (independent movement) ⭐ */
+/* ⭐ PLAYER CARD — COMBAT MODE (fluid movement) ⭐ */
 .container:has(.enemy .card) #character-grid {
-    margin-top: 56px !important;
+    margin-top: clamp(30px, 5vw, 90px) !important;
     margin-bottom: 0 !important;
     margin-left: auto !important;
     margin-right: auto !important;
 }
 
-/* CONSOLES FIXED AT BOTTOM */
+/* CONSOLES FIXED AT BOTTOM (fluid size) */
 .container:has(.enemy .card) #combatConsole,
 .container:has(.enemy .card) #realmConsole {
     position: fixed !important;
-    bottom: 15px !important;
-    width: 320px !important;
-    max-width: 320px !important;
-    height: 200px !important;
-    max-height: 250px !important;
+    bottom: clamp(10px, 2vh, 20px) !important;
+    width: min(40vw, 360px) !important;
+    max-width: min(40vw, 360px) !important;
+    height: clamp(160px, 26vh, 240px) !important;
+    max-height: clamp(180px, 30vh, 260px) !important;
     margin: 0 !important;
     z-index: 1000 !important;
 }
 
 .container:has(.enemy .card) #combatConsole {
-    right: 20px !important;
+    right: clamp(10px, 2vw, 20px) !important;
 }
 
 .container:has(.enemy .card) #realmConsole {
-    left: 20px !important;
+    left: clamp(10px, 2vw, 20px) !important;
     display: flex !important;
     flex-direction: column;
     justify-content: center;
@@ -184,9 +181,10 @@ body:has(.enemy .card) .container {
     width: 100% !important;
 }
 
+/* ENEMY SHOWCASE FLUID */
 #enemyShowcase {
     width: 100%;
-    height: 260px;
+    height: clamp(220px, 32vh, 320px);
     margin: 20px auto;
     display: none;
     justify-content: center;
@@ -215,4 +213,37 @@ body:has(.enemy .card) #enemyShowcase {
 #realmConsole {
     scrollbar-width: none;
     -ms-overflow-style: none;
+}
+
+/* --- ULTRAWIDE / LARGE DISPLAY SCALING (optional fine-tune) --- */
+@media (min-width: 1600px) {
+
+    body:has(.enemy .card) .container {
+        max-width: min(70vw, 1100px) !important;
+    }
+
+    body:has(.enemy .card) #character-grid,
+    body:has(.enemy .card) .enemy {
+        max-width: min(70vw, 1100px) !important;
+    }
+
+    body:has(.enemy .card) #enemyShowcase {
+        height: clamp(280px, 36vh, 360px) !important;
+        max-width: min(70vw, 1100px) !important;
+    }
+
+    body:has(.enemy .card) #combatConsole,
+    body:has(.enemy .card) #realmConsole {
+        width: min(32vw, 380px) !important;
+        max-width: min(32vw, 380px) !important;
+        height: clamp(200px, 28vh, 280px) !important;
+    }
+
+    .container:has(.enemy .card) .actions {
+        top: clamp(40px, 4vw, 80px) !important;
+    }
+
+    .container:has(.enemy .card) #character-grid {
+        margin-top: clamp(50px, 5vw, 110px) !important;
+    }
 }
