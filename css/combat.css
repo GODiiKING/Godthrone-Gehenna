@@ -37,15 +37,9 @@
 }
 
 /* --- 9. COSMIC COMBAT EFFECTS & ANIMATIONS --- */
-@keyframes cosmicShake {
-    0%, 100% { transform: translate(0, 0); }
-    10%, 30%, 50%, 70%, 90% { transform: translate(-4px, 2px); }
-    20%, 40%, 60%, 80% { transform: translate(4px, -2px); }
-}
-
-.shake-active {
-    animation: cosmicShake 0.4s cubic-bezier(.36,.07,.19,.97) both;
-}
+/* SHAKE REMOVED */
+/* @keyframes cosmicShake { ... } */
+/* .shake-active { animation: cosmicShake ... } */
 
 @keyframes flashEnemyHit {
     0% { background: radial-gradient(circle at 50% 20%, #da4a6c, #000000 75%); }
