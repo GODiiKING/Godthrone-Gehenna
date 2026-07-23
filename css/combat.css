@@ -143,12 +143,13 @@ body:has(.enemy .card) {
 
 /* ⭐ ACTION CARDS — COMBAT MODE (independent movement) ⭐ */
 .container:has(.enemy .card) .actions {
-    margin-top: 38px !important;
+    position: relative;
+    top: 44px; /* same value you already use */
 }
 
 /* ⭐ PLAYER CARD — COMBAT MODE (independent movement) ⭐ */
 .container:has(.enemy .card) #character-grid {
-    margin-top: 37px !important;
+    margin-top: 56px !important;
     margin-bottom: 0 !important;
     margin-left: auto !important;
     margin-right: auto !important;
