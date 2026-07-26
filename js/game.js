@@ -257,6 +257,10 @@ function endGameSequence() {
     const viewport = document.querySelector(".vnViewport");
     viewport.style.display = "flex";
 
+    // Disable VN clicking to prevent looping
+    const box = document.getElementById("interactiveBox");
+    box.onclick = null;
+
     // Replace VN content with ending message
     document.getElementById("speakerName").innerText = "Congratulations!";
     document.getElementById("sceneText").innerText =
@@ -265,9 +269,8 @@ function endGameSequence() {
     // Remove click-to-advance prompt
     document.querySelector(".actionPrompt").style.display = "none";
 
-    // Add a return button
-    const box = document.getElementById("interactiveBox");
-    box.innerHTML += `
+    // Add a return button (only once)
+    box.innerHTML = `
         <div style="margin-top:20px; text-align:center;">
             <button class="menu-toggle border-gold" onclick="window.location.href='browsergame.html'">
                 Return to Main Menu
