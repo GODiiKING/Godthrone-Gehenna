@@ -1,5 +1,7 @@
 "use strict";
 
+let vnClickLocked = false;
+
 window.NovelEngine = {
     currentSceneKey: "scene1",
     currentLineIndex: 0,
@@ -77,15 +79,26 @@ window.NovelEngine = {
     },
 
     advanceLine: function() {
-        const lines = visualNovelData[this.currentSceneKey];
-        this.currentLineIndex++;
 
-        if (this.currentLineIndex < lines.length) {
-            this.renderCurrentLine();
-        } else {
-            this.completeScene();
-        }
-    },
+    // ⛔ Prevent spam clicking
+    if (vnClickLocked) return;
+    vnClickLocked = true;
+
+    const lines = visualNovelData[this.currentSceneKey];
+    this.currentLineIndex++;
+
+    if (this.currentLineIndex < lines.length) {
+        this.renderCurrentLine();
+    } else {
+        this.completeScene();
+    }
+
+    // 🔓 Unlock after short delay
+    setTimeout(() => {
+        vnClickLocked = false;
+    }, 550); // 250ms delay prevents skipping
+},
+
 
     completeScene: function() {
         fadeOut(() => {
