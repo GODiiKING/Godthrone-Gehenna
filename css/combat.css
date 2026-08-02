@@ -241,3 +241,100 @@ body:has(.enemy .card) #enemyShowcase {
         margin-top: clamp(50px, 5vw, 110px) !important;
     }
 }
+
+/* ============================================================
+   14. RESPONSIVE COMBAT LAYOUT — PHONE THROUGH TABLET/LAPTOP
+   Covers every width up to 1499px with fluid clamp()-based
+   sizing (no snapping at a single breakpoint). At 1500px+,
+   the original floating-sidebar console design (section 13 +
+   the ultrawide block) takes over untouched — that's roughly
+   the minimum width needed for those consoles to sit beside
+   the center content without overlapping it.
+   ============================================================ */
+@media (max-width: 1499px) {
+
+    /* Let the page scroll naturally instead of hard-clipping at 100vh */
+    body:has(.enemy .card) {
+        height: auto !important;
+        min-height: 100vh !important;
+        overflow-y: auto !important;
+        overflow-x: hidden !important;
+        padding: clamp(10px, 3vw, 20px) !important;
+    }
+
+    .container:has(.enemy .card) {
+        height: auto !important;
+    }
+
+    /* Cap combat elements to a comfortable centered column */
+    .container:has(.enemy .card) .enemy,
+    .container:has(.enemy .card) #character-grid,
+    .container:has(.enemy .card) .actions,
+    body:has(.enemy .card) #enemyShowcase {
+        width: 100% !important;
+        max-width: min(94vw, 720px) !important;
+        margin-left: auto !important;
+        margin-right: auto !important;
+    }
+
+    /* Cards scale fluidly with viewport width — no snapping */
+    .container:has(.enemy .card) #character-grid .card {
+        padding: clamp(10px, 2vw, 20px) clamp(14px, 3vw, 40px) !important;
+        gap: clamp(14px, 3vw, 40px) !important;
+        min-height: unset !important;
+    }
+
+    .container:has(.enemy .card) #character-grid .img-avatar {
+        width: clamp(45px, 10vw, 70px) !important;
+        height: clamp(45px, 10vw, 70px) !important;
+    }
+
+    .container:has(.enemy .card) #character-grid .card h3 {
+        font-size: clamp(0.85rem, 2.2vw, 1.1rem) !important;
+    }
+
+    .container:has(.enemy .card) #character-grid .card p {
+        font-size: clamp(0.65rem, 1.6vw, 0.8rem) !important;
+    }
+
+    /* Enemy art scales instead of jumping at a breakpoint */
+    body:has(.enemy .card) #enemyShowcase {
+        height: clamp(140px, 28vw, 260px) !important;
+        margin: clamp(8px, 2vw, 20px) auto !important;
+    }
+
+    /* Action buttons: auto-fit as many as the row allows,
+       wrap to a new row when there isn't room — no media
+       query needed for this part, it just flows */
+    .container:has(.enemy .card) .actions {
+        top: 0 !important;
+        margin-top: clamp(8px, 2vw, 20px) !important;
+    }
+
+    .actions-row {
+        flex-wrap: wrap !important;
+        gap: clamp(6px, 1.5vw, 12px) !important;
+    }
+
+    .actions-row button {
+        flex: 1 1 140px;
+        font-size: clamp(0.65rem, 1.8vw, 0.85rem) !important;
+        padding: clamp(6px, 1.5vw, 10px) !important;
+    }
+
+    /* Log boxes: normal stacked flow, pushed below everything
+       else, instead of floating fixed sidebars (which need
+       real desktop width to not overlap content) */
+    .container:has(.enemy .card) #combatConsole,
+    .container:has(.enemy .card) #realmConsole {
+        position: static !important;
+        width: 100% !important;
+        max-width: min(94vw, 720px) !important;
+        height: auto !important;
+        max-height: clamp(110px, 20vw, 160px) !important;
+        margin: clamp(6px, 1.5vw, 10px) auto !important;
+        right: auto !important;
+        left: auto !important;
+        order: 10 !important;
+    }
+}
