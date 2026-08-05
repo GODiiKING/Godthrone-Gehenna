@@ -1,4 +1,5 @@
-# 🌌 Godthrone | Gehenna
+# Godthrone | Gehenna
+![Character Selection Screen](images/README.md/godthronegehenna.png)
 
 Welcome to **Godthrone | Gehenna**, an immersive, web based turn based tactical battle arena set within the dark cosmic mythos of the *Godthrone* universe. Choose your divine or horrific entity, experience atmospheric visual novel storytelling, and conquer the linear gauntlet in the arena of the gods.
 
@@ -8,14 +9,21 @@ Welcome to **Godthrone | Gehenna**, an immersive, web based turn based tactical 
 
 Here is a preview of the interface, tactical battle arena, and system design documentation in action:
 
+![Old Game Design Document Blueprint](images/README.md/gdd1.png)
+*Figure 1: Old Game Design Document and legacy system architecture documentation.*
+
 ![Character Selection Screen](images/README.md/example1.png)
-*Figure 1: The Cosmic Character Selection Grid featuring deep space visuals and shrunken tactile cards.*
+*Figure 2:  Old Game Design Document of character Selection Grid featuring deep space visuals and shrunken tactile cards.*
 
 ![Battle Arena Interface](images/README.md/example2.png)
-*Figure 2: Active turn based combat showing state changes, modular player statistics, and enemy health monitoring.*
+*Figure 3:  Old Game Design Document of Active turn based combat showing state changes, modular player statistics, and enemy health monitoring.*
 
-![Old Game Design Document Blueprint](images/README.md/gdd1.png)
-*Figure 3: Old Game Design Document and legacy system architecture documentation.*
+![Novel Interface](images/README.md/novel1.png)
+*Figure 4: New Game Design Document of Novel.*
+
+![Comabt Interface](images/README.md/combat1.png)
+*Figure 4: New Game Design Document of Combat.*
+
 
 <hr>
 
